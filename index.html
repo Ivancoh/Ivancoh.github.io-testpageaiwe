@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aiwe Tech Solutions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" >
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+<div id="particles-js"></div>
+
+<header>
+  <img id="logo" src="logo.png" alt="Aiwe Tech Solutions">
+</header>
+
+<nav>
+  <button data-section="home">Home</button>
+  <button data-section="servicos">Serviços</button>
+  <button onclick="window.location.href='/blog/index.html'">Blog</button>
+</nav>
+
+<main>
+  <section id="home" class="active">
+   <h1>Transformamos Tecnologia em Soluções</h1>
+    <p>Desenvolvimento sob medida, suporte ágil e segurança para sua empresa crescer com confiança.</p>
+		<div class="funnel">
+    <p class="wide animated">Em um mundo em constante transformação, empresas precisam se adaptar rapidamente para sobreviver e prosperar no mercado competitivo.</p>
+    <p class="medium animated">A tecnologia é a chave para essa evolução, mas poucos sabem como utilizá-la estrategicamente.</p>
+    <p class="narrow animated">Nós sabemos.</p>
+	<button class="animated" onclick="document.querySelector('button[data-section=servicos]').click()">Conheça nossos Serviços</button>
+  </div>
+      </section>
+
+  <section id="servicos">
+  <div class="services">
+  <h1>Nossos Serviços</h1>
+
+  <div class="service">
+    <div class="icon" data-title="Consultoria em TI" data-description="Avaliamos, planejamos e implementamos as melhores soluções tecnológicas para sua empresa. 
+	Nosso objetivo é otimizar processos, reduzir custos e aumentar a produtividade, alinhando a tecnologia às suas necessidades.">
+      <!-- Ícone de Consultoria -->
+      <svg width="40" height="40" fill="#F2CA00" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/></svg>
+    </div>
+    <h2>Consultoria em TI</h2>
+    <p>Soluções estratégicas para otimizar a infraestrutura tecnológica da sua empresa.</p>
+  </div>
+
+  <div class="service">
+    <div class="icon" data-title="Desenvolvimento de Software" data-description="Criamos sistemas sob medida para sua empresa. 
+	Todo desenvolvimento é realizado após uma análise detalhada das suas demandas e objetivos, garantindo que a solução atenda exatamente ao que você precisa.
+	 ">
+      <!-- Ícone de Software -->
+      <svg width="40" height="40" fill="#F2CA00" viewBox="0 0 24 24"><path d="M4 4h16v2H4zm0 4h10v2H4zm0 4h16v2H4zm0 4h10v2H4z"/></svg>
+    </div>
+    <h2>Desenvolvimento de Software</h2>
+    <p>Aplicações personalizadas para impulsionar seus negócios com inovação.</p>
+  </div>
+
+  <div class="service">
+    <div class="icon" data-title="Segurança da Informação" data-description="Protegemos seus dados e sua infraestrutura contra ameaças, vazamentos e invasões. 
+	Implementamos práticas, políticas e ferramentas de segurança para garantir a continuidade e a integridade dos seus negócios. 
+	Ofertamos serviços de endpoint e firewall gerenciado, além de serviços de backup em nuvem, pentest e email profissional com antispam.">
+      <!-- Ícone de Segurança -->
+      <svg width="40" height="40" fill="#F2CA00" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+    </div>
+    <h2>Segurança da Informação</h2>
+    <p>Proteção completa contra ameaças cibernéticas com tecnologia de ponta.</p>
+  </div>
+
+  <div class="service">
+    <div class="icon" data-title="Suporte Técnico" data-description="Oferecemos suporte técnico especializado para sua equipe, garantindo que seus colaboradores 
+	tenham sempre a assistência necessária para manter suas atividades sem interrupções. Trabalhamos com licenciamento, gereciamento de máquinas e periféricos, 
+	além de organização interna e gestão da TI da empresa.">
+      <!-- Ícone de Suporte -->
+      <svg width="40" height="40" fill="#F2CA00" viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-10 10h2a8 8 0 018-8V2zm0 20a10 10 0 0010-10h-2a8 8 0 01-8 8v2zm8-10a8 8 0 01-8 8v-2a6 6 0 006-6h2zm-8-8v2a6 6 0 00-6 6H4a8 8 0 018-8z"/></svg>
+    </div>
+    <h2>Suporte Técnico</h2>
+    <p>Atendimento ágil e eficiente para garantir a continuidade das operações.</p>
+  </div>
+  </div>
+  
+   <!-- Modal -->
+  <div id="service-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modal-title">Título do Serviço</h2>
+      <p id="modal-description">Descrição completa do serviço aparecerá aqui.</p>
+    </div>
+  </div>
+  
+</section>
+  
+</main>
+
+  <!-- Bibliotecas -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
+  <!-- Seu JS -->
+  <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,244 @@
+ * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+    body {
+      height: 100%;
+      background: #14161E;
+      overflow-x: hidden;
+      color: #EFEFEF;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      top: 0;
+      left: 0;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background-color: rgba(20, 22, 30, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+      z-index: 10;
+    }
+
+    #logo {
+      max-width: 200px;
+      height: auto;
+    }
+
+    nav {
+      text-align: center;
+      margin: 100px 0 20px;
+    }
+
+    nav button {
+      background: none;
+      border: 2px solid #F2CA00;
+      color: #F2CA00;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    nav button:hover {
+      background: #F2CA00;
+      color: #14161E;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    section {
+      display: none;
+      min-height: 100vh;
+      padding: 2rem 1rem 2rem 1rem;
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      animation: fade 0.5s ease-in-out;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      #logo { max-width: 120px; }
+      nav button { width: 80%; margin: 10px 0; }
+      section { padding: 6rem 1rem 2rem 1rem; }
+    }
+	
+	.funnel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  text-align: center;
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+.funnel .wide {
+  max-width: 800px;
+  font-size: 1.2rem;
+}
+
+.funnel .medium {
+  max-width: 500px;
+  font-size: 1.1rem;
+}
+
+.funnel .narrow {
+  max-width: 300px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #B20000;
+}
+
+.funnel button {
+  background: #F2CA00;
+  color: #14161E;
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.funnel button:hover {
+  background: #d4ae00;
+}
+
+/* ANIMAÇÃO */
+.animated {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s forwards;
+}
+
+.funnel .wide {
+  animation-delay: 0.2s;
+}
+
+.funnel .medium {
+  animation-delay: 0.6s;
+}
+
+.funnel .narrow {
+  animation-delay: 1s;
+}
+
+.funnel button {
+  animation-delay: 1.4s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+	
+	.service {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  margin: 50px 0;
+  padding: 20px;
+  border: 1px solid #F2CA00;
+  border-radius: 8px;
+  background: rgba(20, 22, 30, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+}
+
+.service .icon {
+  flex-shrink: 0;
+}
+
+.service:hover{
+  transform:translateY(-5px);
+  box-shadow: 0 0 15px #F2CA00;
+}
+.service h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.service p {
+  margin: 5px 0 0;
+  font-size: 1rem;
+}
+
+.service.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  align-items: center;
+}
+
+.modal-content {
+  background: #1e1e2f;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 90%;
+  color: #EFEFEF;
+  position: relative;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content h2 {
+  color: #F2CA00;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 15px; right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #F2CA00;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 600px) {
+  .service {
+    width: 80%;
+  }
+}
+

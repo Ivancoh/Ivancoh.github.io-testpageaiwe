@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Backup Corporativo</title>
+  <meta name="description" content="Garanta a continuidade do seu negócio com backup seguro e automatizado.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/services.css">
+</head>
+
+<body class="backup" data-landing="true"
+      style="--grad-start: #e7e9fa; --grad-end: #afb2ec;">
+	
+	<canvas id="bg-canvas"></canvas>
+
+  <header class="animated-header" style="background-image: url('/Ivancoh.github.io-testpageaiwe/images/backup.jpg'); background-size:cover; background-position:center; background-repeat:no-repeat;">
+  <div class="header-content">
+    <h1>Backup Corporativo</h1>
+    <p>Garanta a continuidade do seu negócio com backup seguro e automatizado.</p>
+    <a href="#" class="btn" onclick="openModal()">Fale com um especialista</a>
+  </div>
+</header>
+  
+  <section class="menu-text">
+  <h2>
+<div>
+<h3>A operação contínua é vital, e a proteção dos dados em crescimento é uma prioridade crítica.</h3>
+<h5>Nossa solução de backup em nuvem garante a segurança e a tranquilidade que sua empresa precisa para manter atividades essenciais, 
+como atendimento ao cliente e faturamento, sem interrupções.</h5>
+</div>
+<div class="menu-text-columns">
+<ul>
+<h2>Proteja seus dados contra as principais ameaças:</h2>
+<h3> 31% Erros Humanos</h3>
+<li class="problem">Erros de funcionário e migrações de sistema podem comprometer seus dados.Nosso backup em nuvem oferece uma camada extra de proteção para garantir sua segurança, independente de falhas humanas ou técnicas.</li>
+<h3> 27% Falhas de Hardware</h3>
+<li class="problem">HDs, servidores e storages podem queimar a qualquer momento. Equipamentos antigos e sem garantia aumentam o risco. Nosso backup em nuvem mantém seus dados seguros, independentemente do estado do seu hardware.</li>
+<h3> 22% Ataques Digitais</h3>
+<li class="problem">Vírus e ransomwares são ameaças constantes. Nossa solução robusta de backup protege seus dados mesmo contra os ataques mais agressivos.</li>
+</ul>
+</div>
+</h2>
+  </section>
+
+  <section>
+    <h2>Principais recursos</h2>
+    <div class="features">
+      
+      <div class="feature">
+        <h3>Automatização Simplificada</h3>
+        <p>Backup sem a necessidade de intervenção humana, tornando o processo mais eficiente.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Economia Real</h3>
+        <p>Elimine gastos supérfluos associados a soluções tradicionais de backup.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Segurança de Alto Nível</h3>
+        <p>Criptografia avançada e armazenamento em Data Center TIER III no Brasil com 100% de redundância garantem a proteção de seus dados.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Performance Inigualável</h3>
+        <p>Com uma velocidade de upload/download de Gbps e baixa latência, seus backups serão mais rápidos do que nunca.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Compatibilidade Total</h3>
+        <p>Nossa solução é compatível com a maioria dos sistemas operacionais, bancos de dados e aplicações líderes de mercado.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Auditoria Confidencial</h3>
+        <p>Mantenha seus dados externamente e longe de sua organização com nosso serviço de guarda externa.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Acesso Mobile e WEB</h3>
+        <p>Recupere dados de forma simples através da web, tablets e smartphones.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Controle Total</h3>
+        <p>Relatórios diários para acompanhar a qualidade do serviço e tomar decisões informadas.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Espaço Ilimitado</h3>
+        <p>Contrate mais espaço conforme suas necessidades cresçam.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Suporte Premium</h3>
+        <p>Conte com o apoio de especialistas em segurança da informação para garantir sua tranquilidade.</p>
+      </div>
+      
+    </div>
+  </section>
+  
+  <section class="menu-text">
+  <div>
+ <h3>VANTAGENS DO BACKUP EM NUVEM</h3>
+  <h4>🔵 1. Proteção Completa</h4>
+  <h5>Cópia integral do seu sistema, incluindo o sistema operacional, protegida contra ransomwares e ameaças. Recuperação rápida de arquivos em caso de ataque, minimizando interrupções.</h5>
+  <h4>🛡️ 2. Integridade Garantida</h4>
+  <h5>Configuração especializada que assegura a consistência de bancos de dados, configurações e arquivos críticos.</h5>
+  <h4>⚡ 3. Solução Profissional</h4>
+  <h5>Backups caseiros são vulneráveis a incompatibilidades, malwares, roubos e erros humanos. Adote uma solução empresarial robusta e evite riscos desnecessários.</h5>
+
+  </section>  
+
+  
+  <div id="contact-overlay" class="overlay"></div>
+
+  
+  <div id="contact-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Escolha a melhor forma de entrarmos em contato</h2>
+      
+      <div class="options">
+        <button class="option-btn" onclick="showForm()">Me envie um e-mail</button>
+        <a href="https://wa.me/555131992982" target="_blank" class="option-btn whatsapp">
+          Abrir WhatsApp
+        </a>
+      </div>
+
+      
+      <div id="contact-form" style="display:none; margin-top:1rem;">
+        <form 
+          name="especialista-form" 
+          method="POST" 
+          data-netlify="true" 
+          netlify-honeypot="bot-field"
+          class="styled-form"
+          onsubmit="return handleSubmit(event)"
+        >
+          <input type="hidden" name="form-name" value="especialista-form">
+          <p style="display:none;">
+            <label>Não preencha este campo: <input name="bot-field"></label>
+          </p>
+
+          <label>Nome:</label>
+          <input type="text" name="nome" required>
+
+          <label>É para pessoa física ou jurídica?</label>
+          <input type="text" name="empresa">
+
+          <label>E-mail:</label>
+          <input type="email" name="email" required>
+
+          <label>Telefone:</label>
+          <input type="tel" name="telefone">
+
+          <label>Mensagem:</label>
+          <textarea name="mensagem" rows="4" required></textarea>
+
+          <button type="submit" class="submit-btn">Enviar</button>
+        </form>
+
+        
+        <p id="success-message" style="display:none; margin-top:1rem; color:#25d366; font-weight:bold;">
+          ✅ Mensagem enviada com sucesso! Em breve entraremos em contato.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="#" class="btn" onclick="openModal()">Entre em contato e saiba mais!</a>
+  </footer>
+
+  <script>
+    function openModal() {
+      document.getElementById('contact-overlay').style.display = 'block';
+      document.getElementById('contact-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('contact-overlay').style.display = 'none';
+      document.getElementById('contact-modal').style.display = 'none';
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('success-message').style.display = 'none';
+    }
+
+    function showForm() {
+      document.getElementById('contact-form').style.display = 'block';
+    }
+
+    
+    window.onclick = function(e) {
+      const overlay = document.getElementById('contact-overlay');
+      if (e.target === overlay) {
+        closeModal();
+      }
+    }
+
+    
+    function handleSubmit(event) {
+      event.preventDefault();
+      const form = event.target;
+      const successMsg = document.getElementById("success-message");
+
+      fetch("/", {
+        method: "POST",
+        body: new FormData(form)
+      }).then(() => {
+        form.reset();
+        successMsg.style.display = "block";
+      }).catch(() => {
+        alert("❌ Ocorreu um erro. Tente novamente mais tarde.");
+      });
+
+      return false;
+    }
+  </script>
+  
+<script>
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width, height, particles = [];
+
+  function getVar(name, fallback) {
+    const v = getComputedStyle(document.body).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  function resize() {
+    width  = canvas.width  = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    initParticles();
+  }
+
+  function initParticles() {
+    const COUNT = 100; 
+    particles = Array.from({ length: COUNT }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      r: 1 + Math.random() * 2
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    
+    const start = getVar('--grad-start', '#14161E');
+    const end   = getVar('--grad-end',   '#0a3d62');
+    const g = ctx.createLinearGradient(0, 0, width, height);
+    g.addColorStop(0, start);
+    g.addColorStop(1, end);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, width, height);
+
+    
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > width)  p.vx *= -1;
+      if (p.y < 0 || p.y > height) p.vy *= -1;
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+</script>
+
+
+
+</body>
+</html>

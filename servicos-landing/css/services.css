@@ -1,0 +1,285 @@
+/* FIREWALL */
+body.firewall {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff; /* texto claro por cima do degradê */
+}
+
+body.firewall header {
+  background: #C4C4C4;
+  color: #EFEFEF;
+}
+
+body.firewall .btn {
+  background: #D90429;
+  color: #EFEFEF;
+}
+
+body.firewall .feature { 
+  background:#EFEFEF; 
+  padding:1.5rem; 
+  border-radius:8px; 
+}
+
+body.firewall .features {
+  background:#C4C4C4; 
+  padding:1.5rem 2rem; 
+  border-radius:8px; 
+  color:#14161E; 
+  font-weight:bold;
+}
+
+section.highlight {
+  background: rgba(0, 0, 0, 0.4); /* sobreposição transparente */
+  padding: 2rem;
+  border-radius: 12px;
+  margin: 2rem;
+}
+
+
+/* ENDPOINT-PROTECTION */
+body.endpoint-protection {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff; /* texto claro por cima do degradê */
+}
+
+body.endpoint-protection header {
+  background: #dfdfdf;
+  color: #EFEFEF;
+}
+
+body.endpoint-protection .btn {
+  background: #FF9E3A;
+  color: #EFEFEF;
+}
+
+body.endpoint-protection .feature { 
+  background:#D8F3DC; 
+  padding:1.5rem; 
+  border-radius:8px; 
+}
+
+body.endpoint-protection .features {
+  background:#2D3748; 
+  padding:1rem 2rem; 
+  border-radius:8px; 
+  color:#14161E; 
+  text-decoration:none; 
+  font-weight:bold;
+}
+
+
+/* BACKUP */
+body.backup {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff; /* texto claro por cima do degradê */
+}
+
+body.backup header {
+  background: #f0f0f0;
+  color: white;
+}
+
+body.backup .btn {
+  background: #2EC4B6;
+  color: white;
+}
+
+body.backup .feature { 
+  background:#03045E; 
+  padding:1.5rem; 
+  border-radius:8px; 
+}
+
+body.backup .features {
+  background:#f0f0f0; 
+  padding:1rem 2rem; 
+  border-radius:8px; 
+  color:#EFEFEF; 
+  text-decoration:none; 
+  font-weight:bold;
+}
+
+
+/* EMAIL-PROFISSIONAL */
+body.email-profissional {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff; /* texto claro por cima do degradê */
+}
+
+body.email-profissional header {
+  background: #292524;
+  color: white;
+}
+
+body.email-profissional .btn {
+  background: #1A56DB;
+  color: white;
+}
+
+body.email-profissional .feature { 
+  background:#E3F2FD; 
+  padding:1.5rem; 
+  border-radius:8px; 
+}
+
+body.email-profissional .features {
+  background:#292524; 
+  padding:1rem 2rem; 
+  border-radius:8px; 
+  color:#14161E; 
+  text-decoration:none; 
+  font-weight:bold;
+}
+
+
+/* GESTAO-TI */
+body.gestao-ti {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff; /* texto claro por cima do degradê */
+}
+
+body.gestao-ti header {
+  background: #FF9A3C;
+  color: white;
+}
+
+body.gestao-ti .btn {
+  background: #28a745;
+  color: white;
+}
+
+body.gestao-ti .feature { 
+  background:#FF9A3C; 
+  padding:1.5rem; 
+  border-radius:8px; 
+}
+
+body.gestao-ti .features {
+  background:#EFEFEF; 
+  padding:1rem 2rem; 
+  border-radius:8px; 
+  color:#14161E; 
+  text-decoration:none; 
+  font-weight:bold;
+}
+
+
+/* LICENCIAMENTO */
+body.licenciamento {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff; /* texto claro por cima do degradê */
+}
+
+body.licenciamento header {
+  background: #0A6847;
+  color: white;
+}
+
+body.licenciamento .btn {
+  background: #FFD700;
+  color: black;
+}
+
+body.licenciamento .feature { 
+  background:#0A6847; 
+  padding:1.5rem; 
+  border-radius:8px; 
+}
+
+body.licenciamento .features {
+  background:#EFEFEF; 
+  padding:1rem 2rem; 
+  border-radius:8px; 
+  color:#EFEFEF; 
+  text-decoration:none; 
+  font-weight:bold;
+}
+
+
+/* PENTEST */
+body.pentest {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff; /* texto claro por cima do degradê */
+}
+
+body.pentest header {
+  background: #D90429;
+  color: white;
+}
+
+body.pentest .btn {
+  background: #FFD166;
+  color: black;
+}
+
+body.pentest .feature { 
+  background:#D90429; 
+  padding:1.5rem; 
+  border-radius:8px; 
+}
+
+body.pentest .features {
+  background:#EFEFEF; 
+  padding:1rem 2rem; 
+  border-radius:8px; 
+  color:#14161E; 
+  text-decoration:none; 
+  font-weight:bold;
+}
+
+
+/* VPS */
+body.vps {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff; /* texto claro por cima do degradê */
+}
+
+body.vps header {
+  background: #000000;
+  color: white;
+}
+
+body.vps .btn {
+  background: #4CC9F0;
+  color: white;
+}
+
+body.vps .feature { 
+  background:#F72585; 
+  padding:1.5rem; 
+  border-radius:8px; 
+}
+
+body.vps .features {
+  background:#EFEFEF; 
+  padding:1rem 2rem; 
+  border-radius:8px; 
+  color:#14161E; 
+  text-decoration:none; 
+  font-weight:bold;
+}
+

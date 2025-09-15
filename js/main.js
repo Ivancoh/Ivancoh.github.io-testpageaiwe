@@ -86,12 +86,12 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 const servicosResumo = {
-  "Firewall": "Protege sua rede contra acessos não autorizados.",
+  "Firewall": "Protege sua empresa contra acessos não autorizados.",
   "Endpoint Protection": "Segurança para dispositivos e controle centralizado.",
   "Backup": "Backup automático e criptografado na nuvem.",
   "VPS": "Hospedagem segura e escalável para seus sistemas.",
   "Pentest": "Identificação de vulnerabilidades na sua infraestrutura.",
-  "Gestão de TI": "Gerenciamento completo de ativos e suporte contínuo.",
+  "Gestão TI": "Gerenciamento completo de ativos e suporte contínuo.",
   "Licenciamento": "Licenças originais para softwares corporativos.",
   "Email Profissional": "E-mails com domínio corporativo e antispam."
 };
@@ -107,7 +107,19 @@ document.querySelectorAll('.servico-item').forEach(el => {
     document.getElementById('mini-overlay').style.display = 'block';
 
     document.getElementById('btn-saber-mais').onclick = () => {
-      window.location.href = `${servico.toLowerCase().replace(/\s+/g, '-')}.html`;
+		function formatarParaURL(texto) {
+         return texto
+        .normalize('NFD') // Separa caracteres e acentos
+        .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+        .toLowerCase() // Converte para minúsculas
+        .replace(/\s+/g, '-') // Substitui espaços por hífens
+        .replace(/[^a-z0-9-]/g, '') // Remove caracteres especiais (opcional)
+        .replace(/-+/g, '-') // Remove múltiplos hífens consecutivos
+        .replace(/^-|-$/g, ''); // Remove hífens no início e fim
+        }
+
+        window.location.href = `./servicos-landing/servicos/${formatarParaURL(servico)}/index.html`;
+      
     };
   });
 });

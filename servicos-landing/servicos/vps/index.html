@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Servidores VPS</title>
+  <meta name="description" content="Hospedagem em servidores virtuais de alta performance e confiabilidade.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/services.css">
+</head>
+
+<body class="vps" data-landing="true"
+      style="--grad-start: #7209B7; --grad-end: #3A0CA3;">
+	
+	<canvas id="bg-canvas"></canvas>
+
+  <header class="animated-header" style="background-image: url('/Ivancoh.github.io-testpageaiwe/images/vps.jpg'); background-size:cover; background-position:center; background-repeat:no-repeat;">
+  <div class="header-content">
+    <h1>Servidores VPS</h1>
+    <p>Hospedagem em servidores virtuais de alta performance e confiabilidade.</p>
+    <a href="#" class="btn" onclick="openModal()">Fale com um especialista</a>
+  </div>
+</header>
+  
+  <section class="menu-text">
+  <h2>
+<div>
+<h3>HOSPEDAGEM VPS DE ALTA PERFORMANCE NO BRASIL</h3>  
+<h5>Oferecemos performance, segurança e flexibilidade para aplicações críticas, com infraestrutura 100% nacional e suporte especializado.</h5>  
+</div>
+</h2>
+  </section>
+
+  <section>
+    <h2>Principais recursos</h2>
+    <div class="features">
+      
+      <div class="feature">
+        <h3>Performance Superior</h3>
+        <p>Latência ultrabaixa em todo o território nacional, com servidores localizados em São Paulo e hardware de última geração para máxima velocidade e estabilidade.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Confiabilidade e Redundância</h3>
+        <p>Dois datacenters geograficamente distribuídos, com energia e conexão redundantes. Seus serviços permanecem online mesmo em cenários críticos.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Personalização Total</h3>
+        <p>Escolha entre Linux ou Windows, ajuste recursos como CPU, RAM, armazenamento e IPs adicionais sob demanda. Sua VPS, do seu jeito.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Custo-Benefício Excepcional</h3>
+        <p>Tenha o poder de um servidor dedicado por uma fração do preço. Oferecemos tráfego iluntado e recursos escaláveis sem cobranças extras.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Segurança Reforçada (Opcional)</h3>
+        <p>Proteja seus dados com serviços adicionais de backup automatizado e antivírus, garantindo compliance e tranquilidade.</p>
+      </div>
+      
+    </div>
+  </section>
+  
+  <section class="menu-text">
+  <h3>Benefícios para Seu Negócio</h3>
+  <h4>🌐 Alta Disponibilidade</h4>
+  <h5>Sistemas estáveis e rápidos permitem que sua equipe foque no crescimento do negócio, sem interrupções.</h5>
+  <h4>📈 Escalabilidade Imediata</h4>
+  <h5>Aumente recursos de CPU, RAM ou armazenamento sem downtime conforme sua necessidade cresce.</h5>
+  <h4>🔐 Controle Total com Segurança</h4>
+  <h5>Acesso root completo, firewall gerenciável e opções de segurança avançadas para compliance com LGPD.</h5>
+  <h4>💡 Suporte Técnico Especializado</h4>
+  <h5>Equipe 24/7 pronta para auxiliar em configurações, migrações e otimizações técnicas.</h5>
+<h3>Para Quem É Ideal?</h3>
+<h5>Lojas virtuais e aplicações de missão crítica</h5>
+<h5>Ambientes de desenvolvimento e testes</h5>
+<h5>Hospedagem de aplicações corporativas</h5>
+<h5>Serviços de streaming e gaming</h5>
+<h5>Backup em nuvem e redundância de infraestrutura</h5>
+
+<h3>Pronto para Elevar Sua Infraestrutura?</h3>
+<h4>💻 Experimente uma VPS sob medida para seu projeto!</h4>
+
+  </section>  
+
+  
+  <div id="contact-overlay" class="overlay"></div>
+
+  
+  <div id="contact-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Escolha a melhor forma de entrarmos em contato</h2>
+      
+      <div class="options">
+        <button class="option-btn" onclick="showForm()">Me envie um e-mail</button>
+        <a href="https://wa.me/555131992982" target="_blank" class="option-btn whatsapp">
+          Abrir WhatsApp
+        </a>
+      </div>
+
+      
+      <div id="contact-form" style="display:none; margin-top:1rem;">
+        <form 
+          name="especialista-form" 
+          method="POST" 
+          data-netlify="true" 
+          netlify-honeypot="bot-field"
+          class="styled-form"
+          onsubmit="return handleSubmit(event)"
+        >
+          <input type="hidden" name="form-name" value="especialista-form">
+          <p style="display:none;">
+            <label>Não preencha este campo: <input name="bot-field"></label>
+          </p>
+
+          <label>Nome:</label>
+          <input type="text" name="nome" required>
+
+          <label>É para pessoa física ou jurídica?</label>
+          <input type="text" name="empresa">
+
+          <label>E-mail:</label>
+          <input type="email" name="email" required>
+
+          <label>Telefone:</label>
+          <input type="tel" name="telefone">
+
+          <label>Mensagem:</label>
+          <textarea name="mensagem" rows="4" required></textarea>
+
+          <button type="submit" class="submit-btn">Enviar</button>
+        </form>
+
+        
+        <p id="success-message" style="display:none; margin-top:1rem; color:#25d366; font-weight:bold;">
+          ✅ Mensagem enviada com sucesso! Em breve entraremos em contato.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="#" class="btn" onclick="openModal()">Entre em contato e saiba mais!</a>
+  </footer>
+
+  <script>
+    function openModal() {
+      document.getElementById('contact-overlay').style.display = 'block';
+      document.getElementById('contact-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('contact-overlay').style.display = 'none';
+      document.getElementById('contact-modal').style.display = 'none';
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('success-message').style.display = 'none';
+    }
+
+    function showForm() {
+      document.getElementById('contact-form').style.display = 'block';
+    }
+
+    
+    window.onclick = function(e) {
+      const overlay = document.getElementById('contact-overlay');
+      if (e.target === overlay) {
+        closeModal();
+      }
+    }
+
+    
+    function handleSubmit(event) {
+      event.preventDefault();
+      const form = event.target;
+      const successMsg = document.getElementById("success-message");
+
+      fetch("/", {
+        method: "POST",
+        body: new FormData(form)
+      }).then(() => {
+        form.reset();
+        successMsg.style.display = "block";
+      }).catch(() => {
+        alert("❌ Ocorreu um erro. Tente novamente mais tarde.");
+      });
+
+      return false;
+    }
+  </script>
+  
+<script>
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width, height, particles = [];
+
+  function getVar(name, fallback) {
+    const v = getComputedStyle(document.body).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  function resize() {
+    width  = canvas.width  = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    initParticles();
+  }
+
+  function initParticles() {
+    const COUNT = 100; 
+    particles = Array.from({ length: COUNT }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      r: 1 + Math.random() * 2
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    
+    const start = getVar('--grad-start', '#14161E');
+    const end   = getVar('--grad-end',   '#0a3d62');
+    const g = ctx.createLinearGradient(0, 0, width, height);
+    g.addColorStop(0, start);
+    g.addColorStop(1, end);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, width, height);
+
+    
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > width)  p.vx *= -1;
+      if (p.y < 0 || p.y > height) p.vy *= -1;
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+</script>
+
+
+
+</body>
+</html>

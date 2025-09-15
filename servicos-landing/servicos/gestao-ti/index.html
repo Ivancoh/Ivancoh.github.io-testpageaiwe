@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestão de TI</title>
+  <meta name="description" content="Administração completa da infraestrutura de TI da sua empresa.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/services.css">
+</head>
+
+<body class="gestao-ti" data-landing="true"
+      style="--grad-start: #0061A8; --grad-end: #33415C;">
+	
+	<canvas id="bg-canvas"></canvas>
+
+  <header class="animated-header" style="background-image: url('/Ivancoh.github.io-testpageaiwe/images/gestao-ti.jpg'); background-size:cover; background-position:center; background-repeat:no-repeat;">
+  <div class="header-content">
+    <h1>Gestão de TI</h1>
+    <p>Administração completa da infraestrutura de TI da sua empresa.</p>
+    <a href="#" class="btn" onclick="openModal()">Fale com um especialista</a>
+  </div>
+</header>
+  
+  <section class="menu-text">
+  <h2>
+<div>
+<h3>Gestão de TI Eficiente para Impulsionar seu Negócio</h3>  
+<h5>Na era digital, a tecnologia é o coração da sua operação. Nossa Gestão de TI oferece suporte completo e proativo para garantir que sua infraestrutura tecnológica funcione perfeitamente — 
+para que você possa focar no que realmente importa: seu negócio.
+Com soluções personalizadas, monitoramento contínuo e suporte especializado, garantimos estabilidade, 
+segurança e performance para seus sistemas, permitindo que você atenda com excelência às demandas dos seus clientes e supere as expectativas do mercado.</h5>  
+</div>
+</h2>
+  </section>
+
+  <section>
+    <h2>Principais recursos</h2>
+    <div class="features">
+      
+      <div class="feature">
+        <h3>Monitoramento Contínuo</h3>
+        <p>Supervisão 24/7 da sua infraestrutura para identificar e resolver problemas antes que afetem seu negócio.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Suporte Técnico Ágil</h3>
+        <p>Equipe especializada pronta para resolver incidentes rapidamente e minimizar tempo de inatividade.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Gestão de Segurança</h3>
+        <p>Proteção avançada contra ameaças cibernéticas, com backups automatizados e políticas de segurança robustas.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Otimização de Performance</h3>
+        <p>Análise e ajustes regulares para garantir que seus sistemas operem com máxima eficiência.</p>
+      </div>
+      
+      <div class="feature">
+        <h3>Gestão de Ativos de TI</h3>
+        <p>Controle completo de hardware, software e licenças, reduzindo custos e evitando desperdícios.</p>
+      </div>
+      
+    </div>
+  </section>
+  
+  <section class="menu-text">
+  <h3>Benefícios do Serviço</h3>
+  <h4>🎯 Mais Produtividade</h4>
+  <h5>Sistemas estáveis e rápidos permitem que sua equipe foque no crescimento do negócio, sem interrupções.</h5>
+  <h4>🔒 Segurança Reforçada</h4>
+  <h5>Proteja dados sensíveis e evite prejuízos com uma estratégia de segurança multicamada.</h5>
+  <h4>📉 Redução de Custos</h4>
+  <h5>Elimine gastos imprevistos com falhas e otimize investimentos em tecnologia.</h5>
+  <h4>⚡Escalabilidade</h4>
+  <h5>Infraestrutura preparada para crescer junto com sua empresa, de forma flexível e estruturada.</h5>
+  <h4>💡 Vantagem Competitiva</h4>
+  <h5>Tecnologia eficiente como diferencial para atrair e reter clientes.</h5>
+<h3>Pronto para transformar sua operação de TI?</h3>
+<h4>Fale conosco e descubra como nossa gestão de TI pode elevar a performance e a segurança do seu negócio.</h4>
+
+  </section>  
+
+  
+  <div id="contact-overlay" class="overlay"></div>
+
+  
+  <div id="contact-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Escolha a melhor forma de entrarmos em contato</h2>
+      
+      <div class="options">
+        <button class="option-btn" onclick="showForm()">Me envie um e-mail</button>
+        <a href="https://wa.me/555131992982" target="_blank" class="option-btn whatsapp">
+          Abrir WhatsApp
+        </a>
+      </div>
+
+      
+      <div id="contact-form" style="display:none; margin-top:1rem;">
+        <form 
+          name="especialista-form" 
+          method="POST" 
+          data-netlify="true" 
+          netlify-honeypot="bot-field"
+          class="styled-form"
+          onsubmit="return handleSubmit(event)"
+        >
+          <input type="hidden" name="form-name" value="especialista-form">
+          <p style="display:none;">
+            <label>Não preencha este campo: <input name="bot-field"></label>
+          </p>
+
+          <label>Nome:</label>
+          <input type="text" name="nome" required>
+
+          <label>É para pessoa física ou jurídica?</label>
+          <input type="text" name="empresa">
+
+          <label>E-mail:</label>
+          <input type="email" name="email" required>
+
+          <label>Telefone:</label>
+          <input type="tel" name="telefone">
+
+          <label>Mensagem:</label>
+          <textarea name="mensagem" rows="4" required></textarea>
+
+          <button type="submit" class="submit-btn">Enviar</button>
+        </form>
+
+        
+        <p id="success-message" style="display:none; margin-top:1rem; color:#25d366; font-weight:bold;">
+          ✅ Mensagem enviada com sucesso! Em breve entraremos em contato.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="#" class="btn" onclick="openModal()">Entre em contato e saiba mais!</a>
+  </footer>
+
+  <script>
+    function openModal() {
+      document.getElementById('contact-overlay').style.display = 'block';
+      document.getElementById('contact-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('contact-overlay').style.display = 'none';
+      document.getElementById('contact-modal').style.display = 'none';
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('success-message').style.display = 'none';
+    }
+
+    function showForm() {
+      document.getElementById('contact-form').style.display = 'block';
+    }
+
+    
+    window.onclick = function(e) {
+      const overlay = document.getElementById('contact-overlay');
+      if (e.target === overlay) {
+        closeModal();
+      }
+    }
+
+    
+    function handleSubmit(event) {
+      event.preventDefault();
+      const form = event.target;
+      const successMsg = document.getElementById("success-message");
+
+      fetch("/", {
+        method: "POST",
+        body: new FormData(form)
+      }).then(() => {
+        form.reset();
+        successMsg.style.display = "block";
+      }).catch(() => {
+        alert("❌ Ocorreu um erro. Tente novamente mais tarde.");
+      });
+
+      return false;
+    }
+  </script>
+  
+<script>
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width, height, particles = [];
+
+  function getVar(name, fallback) {
+    const v = getComputedStyle(document.body).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  function resize() {
+    width  = canvas.width  = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    initParticles();
+  }
+
+  function initParticles() {
+    const COUNT = 100; 
+    particles = Array.from({ length: COUNT }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      r: 1 + Math.random() * 2
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    
+    const start = getVar('--grad-start', '#14161E');
+    const end   = getVar('--grad-end',   '#0a3d62');
+    const g = ctx.createLinearGradient(0, 0, width, height);
+    g.addColorStop(0, start);
+    g.addColorStop(1, end);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, width, height);
+
+    
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > width)  p.vx *= -1;
+      if (p.y < 0 || p.y > height) p.vy *= -1;
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+</script>
+
+
+
+</body>
+</html>

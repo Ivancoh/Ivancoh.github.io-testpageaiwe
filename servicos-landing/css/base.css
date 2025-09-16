@@ -342,3 +342,67 @@ footer {
   color: green;
   font-weight: bold;
 }
+
+.btn-voltar-inicio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #F2CA00 0%, #B20000 100%);
+  color: white;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(178, 0, 0, 0.3);
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  overflow: hidden;
+  z-index: 1000;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-voltar-inicio::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(135deg, #B20000 0%, #F2CA00 100%);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.btn-voltar-inicio:hover::before {
+  width: 100%;
+}
+
+.btn-voltar-inicio:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(178, 0, 0, 0.5);
+}
+
+.btn-voltar-inicio:active {
+  transform: translateY(1px);
+}
+
+.btn-voltar-inicio i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.btn-voltar-inicio:hover i {
+  transform: translateX(-5px);
+}
+
+@media (max-width: 600px) {
+  .btn-voltar-inicio {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+}

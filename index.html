@@ -91,6 +91,7 @@
         display: flex;
         gap: 15px;
         margin: 0;
+        position: relative;
     }
 
     nav button {
@@ -107,6 +108,68 @@
     nav button:hover {
         background: var(--primary-color);
         color: var(--bg-color);
+    }
+
+    /* Menu de Serviços Dropdown */
+    .services-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .services-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: var(--card-bg);
+        min-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 101;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 5px;
+        border: 1px solid var(--primary-color);
+    }
+
+    .services-menu.active {
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .service-menu-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        text-decoration: none;
+        color: var(--text-color);
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        transition: background-color 0.2s;
+        cursor: pointer;
+    }
+
+    .service-menu-item:last-child {
+        border-bottom: none;
+    }
+
+    .service-menu-item:hover {
+        background-color: var(--service-hover);
+    }
+
+    .service-menu-item img {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        filter: brightness(0.8);
+    }
+
+    .service-menu-item p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     #theme-toggle {
@@ -276,18 +339,24 @@
         position: fixed;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%) scale(0.9);
         background: var(--modal-bg);
         border: 1px solid var(--accent-color);
         padding: 25px;
         border-radius: 10px;
         text-align: center;
-        animation: fadeIn 0.3s ease-in-out;
         z-index: 10000;
         max-width: 90%;
         width: 400px;
         box-shadow: 0 5px 25px rgba(0,0,0,0.5);
         color: var(--text-color);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .mini-info.active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
 
     #mini-overlay {
@@ -300,6 +369,12 @@
         display: none;
         z-index: 9999;
         cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    #mini-overlay.active {
+        opacity: 1;
     }
 
     .mini-info h3 {
@@ -363,6 +438,24 @@
         nav {
             width: 100%;
             justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .services-dropdown {
+            width: 100%;
+        }
+        
+        #services-btn {
+            width: 100%;
+            margin: 0;
+        }
+        
+        .services-menu {
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            min-width: auto;
         }
         
         .funnel {
@@ -483,7 +576,13 @@
   <img id="logo" src="logo.png" alt="Aiwe Tech Solutions">
   <div class="header-controls">
     <nav>
-      <button data-section="home">Home</button>
+      <!-- Botão Serviços com dropdown -->
+      <div class="services-dropdown">
+        <button id="services-btn">Serviços</button>
+        <div class="services-menu" id="services-menu">
+          <!-- Itens do menu serão preenchidos via JavaScript -->
+        </div>
+      </div>
       <button onclick="window.location.href='/Ivancoh.github.io-testpageaiwe/blog/index.html'">Blog</button>
     </nav>
     <button id="theme-toggle" aria-label="Alternar tema">
@@ -495,7 +594,7 @@
 <main>
   <section id="home" class="active">
     <div id="mini-overlay"></div>
-    <div id="mini-info" class="mini-info" style="display:none;">
+    <div id="mini-info" class="mini-info">
       <h3 id="mini-title"></h3>
       <p id="mini-description"></p>
       <button id="btn-saber-mais">Saber mais</button>
@@ -688,27 +787,107 @@
         .replace(/^-|-$/g, ''); // Remove hífens no início e fim
     }
 
-    // Configuração dos cliques nos serviços
-    document.querySelectorAll('.servico-item').forEach(el => {
+    // Configuração do menu de serviços
+    const servicesBtn = document.getElementById('services-btn');
+    const servicesMenu = document.getElementById('services-menu');
+    const miniInfo = document.getElementById('mini-info');
+    const miniOverlay = document.getElementById('mini-overlay');
+    
+    // Preencher o menu de serviços
+    const servicos = [
+      { nome: "Firewall", icone: "assets/icones/firewall.svg" },
+      { nome: "Endpoint Protection", icone: "assets/icones/endpoint.svg" },
+      { nome: "Backup", icone: "assets/icones/backup.svg" },
+      { nome: "VPS", icone: "assets/icones/vps.svg" },
+      { nome: "Pentest", icone: "assets/icones/pentest.svg" },
+      { nome: "Gestão TI", icone: "assets/icones/gestao.svg" },
+      { nome: "Licenciamento", icone: "assets/icones/licenciamento.svg" },
+      { nome: "Email Profissional", icone: "assets/icones/email.svg" }
+    ];
+    
+    servicos.forEach(servico => {
+      const menuItem = document.createElement('div');
+      menuItem.className = 'service-menu-item';
+      menuItem.setAttribute('data-target', servico.nome);
+      
+      menuItem.innerHTML = `
+        <img src="${servico.icone}" alt="${servico.nome}">
+        <p>${servico.nome}</p>
+      `;
+      
+      servicesMenu.appendChild(menuItem);
+    });
+    
+    // Abrir/fechar menu de serviços
+    servicesBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      servicesMenu.classList.toggle('active');
+    });
+    
+    // Fechar menu ao clicar fora
+    document.addEventListener('click', () => {
+      servicesMenu.classList.remove('active');
+    });
+    
+    // Prevenir que o menu feche ao clicar nele
+    servicesMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+    
+    // Função para mostrar informações do serviço
+    function showServiceInfo(servico) {
+      document.getElementById('mini-title').innerText = servico;
+      document.getElementById('mini-description').innerText = servicosResumo[servico] || '';
+      
+      // Mostrar overlay e modal com animação
+      miniOverlay.style.display = 'block';
+      miniInfo.style.display = 'block';
+      
+      // Pequeno delay para garantir que o display:block foi aplicado
+      setTimeout(() => {
+        miniOverlay.classList.add('active');
+        miniInfo.classList.add('active');
+      }, 10);
+
+      document.getElementById('btn-saber-mais').onclick = () => {
+        window.location.href = `./servicos-landing/servicos/${formatarParaURL(servico)}/index.html`;
+      };
+    }
+
+    // Função para fechar o modal
+    function closeServiceInfo() {
+      miniOverlay.classList.remove('active');
+      miniInfo.classList.remove('active');
+      
+      // Esperar a animação terminar antes de esconder completamente
+      setTimeout(() => {
+        miniOverlay.style.display = 'none';
+        miniInfo.style.display = 'none';
+      }, 300);
+    }
+
+    // Configuração dos cliques nos serviços (tanto no menu quanto na grade)
+    document.querySelectorAll('.servico-item, .service-menu-item').forEach(el => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
         const servico = el.getAttribute('data-target');
-
-        document.getElementById('mini-title').innerText = servico;
-        document.getElementById('mini-description').innerText = servicosResumo[servico] || '';
-        document.getElementById('mini-info').style.display = 'block';
-        document.getElementById('mini-overlay').style.display = 'block';
-
-        document.getElementById('btn-saber-mais').onclick = () => {
-          window.location.href = `./servicos-landing/servicos/${formatarParaURL(servico)}/index.html`;
-        };
+        
+        // Fechar o menu de serviços se estiver aberto
+        servicesMenu.classList.remove('active');
+        
+        // Mostrar informações do serviço
+        showServiceInfo(servico);
       });
     });
 
     // Fechar ao clicar no overlay
-    document.getElementById('mini-overlay').addEventListener('click', () => {
-      document.getElementById('mini-info').style.display = 'none';
-      document.getElementById('mini-overlay').style.display = 'none';
+    miniOverlay.addEventListener('click', closeServiceInfo);
+
+    // Fechar ao pressionar ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && miniOverlay.style.display === 'block') {
+        closeServiceInfo();
+      }
     });
   });
 </script>

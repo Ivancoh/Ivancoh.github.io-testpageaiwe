@@ -121,7 +121,7 @@
         position: absolute;
         top: 100%;
         left: 0;
-        background-color: var(--card-bg);
+        background-color: var(--modal-bg);
         min-width: 200px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 101;
@@ -129,6 +129,7 @@
         overflow: hidden;
         margin-top: 5px;
         border: 1px solid var(--primary-color);
+		backdrop-filter: blur(10px);
     }
 
     .services-menu.active {

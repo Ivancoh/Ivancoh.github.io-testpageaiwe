@@ -1,0 +1,32 @@
+[build]
+  publish = "public"
+  command = "echo 'Build completo'"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Redirects para as landing pages antigas (se necessário)
+[[redirects]]
+  from = "/servicos/firewall"
+  to = "/servicos-landing/firewall.html"
+  status = 200
+
+[[redirects]]
+  from = "/servicos/backup"
+  to = "/servicos-landing/backup.html" 
+  status = 200
+
+[[redirects]]
+  from = "/servicos/gestao"
+  to = "/servicos-landing/gestao.html"
+  status = 200
+
+[[redirects]]
+  from = "/servicos/suporte"
+  to = "/servicos-landing/suporte.html"
+  status = 200

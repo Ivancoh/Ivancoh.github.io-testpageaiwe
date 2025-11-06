@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte Técnico - Aiwe Tech Solutions</title>
+    <style>
+        /* Estilos base similares ao site principal */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        :root {
+            --bg-color: #EFEFEF;
+            --text-color: #14161E;
+            --primary-color: #B20000;
+            --accent-color: #B20000;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        .dark-theme {
+            --bg-color: #14161E;
+            --text-color: #EFEFEF;
+            --primary-color: #F2CA00;
+            --accent-color: #F2CA00;
+            --card-bg: rgba(20, 22, 30, 0.9);
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .support-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 50px;
+        }
+
+        .support-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            background: #c9a800;
+            transform: translateY(-50%) translateX(-5px);
+        }
+
+        .support-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .support-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .support-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .support-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .support-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .support-card p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #c9a800;
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+        }
+
+        .btn-email {
+            background: #EA4335;
+        }
+
+        .btn-email:hover {
+            background: #D14836;
+        }
+
+        .priority-badge {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .faq-section {
+            margin-top: 50px;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-answer.active {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+
+        .response-time {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .time-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        /* Botão de voltar no rodapé para mobile */
+        .back-button-mobile {
+            display: none;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 30px auto;
+            text-align: center;
+            max-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .response-time {
+                flex-direction: column;
+            }
+            
+            .time-card {
+                margin: 10px 0;
+            }
+
+            .back-button {
+                position: static;
+                transform: none;
+                margin-bottom: 20px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .support-header {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .support-header h1 {
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .support-header h1 {
+                font-size: 2rem;
+            }
+            
+            .back-button {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <div class="support-container">
+        <div class="support-header">
+            <a href="https://www.aiwe.com.br/" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Voltar para Página Principal
+            </a>
+            <h1>Suporte Técnico</h1>
+            <p>Estamos aqui para ajudar você 24/7</p>
+        </div>
+
+        <div class="support-grid">
+            <!-- WhatsApp - Prioridade -->
+            <div class="support-card">
+                <div class="support-icon">📱</div>
+                <h3>Suporte Imediato <span class="priority-badge">RECOMENDADO</span></h3>
+                <p>Atendimento rápido via WhatsApp para problemas urgentes e suporte em tempo real</p>
+                <a href="https://wa.me/555131992982?text=Olá! Preciso de suporte técnico." class="btn btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <div class="response-info">
+                    <small>Tempo de resposta: 2-5 minutos</small>
+                </div>
+            </div>
+
+            <!-- Ticket System -->
+            <div class="support-card">
+                <div class="support-icon">🎫</div>
+                <h3>Sistema de Tickets</h3>
+                <p>Para problemas complexos que requerem acompanhamento e documentação detalhada</p>
+                <a href="#" class="btn" onclick="openTicketModal()">Abrir Ticket</a>
+                <div class="response-info">
+                    <small>Tempo de resposta: 1-4 horas</small>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="support-card">
+                <div class="support-icon">✉️</div>
+                <h3>Suporte por Email</h3>
+                <p>Para consultas detalhadas, orçamentos e problemas não urgentes</p>
+                <a href="mailto:suporte@aiwetech.com.br?subject=Suporte Técnico" class="btn btn-email">
+                    <i class="fas fa-envelope"></i> Enviar Email
+                </a>
+                <div class="response-info">
+                    <small>Tempo de resposta: 4-8 horas</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informações de Tempo de Resposta -->
+        <div class="response-time">
+            <div class="time-card">
+                <h4>🟢 Crítico</h4>
+                <p>Sistema inoperante</p>
+                <strong>2-15 minutos</strong>
+            </div>
+            <div class="time-card">
+                <h4>🟡 Alto</h4>
+                <p>Funcionalidade limitada</p>
+                <strong>30-60 minutos</strong>
+            </div>
+            <div class="time-card">
+                <h4>🔵 Normal</h4>
+                <p>Problemas não críticos</p>
+                <strong>2-4 horas</strong>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 style="text-align: center; margin-bottom: 30px;">Perguntas Frequentes</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Qual o horário de atendimento?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Atendemos 24 horas por dia, 7 dias por semana para emergências. O suporte padrão funciona de segunda a sexta, das 9h às 17h.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Como classificar a urgência do meu problema?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>Crítico:</strong> Sistema completamente inoperante<br>
+                    <strong>Alto:</strong> Funcionalidades essenciais comprometidas<br>
+                    <strong>Normal:</strong> Problemas que não impedem operação</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Quais informações devo ter antes de contatar o suporte?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>• Número do contrato/cliente<br>
+                    • Descrição detalhada do problema<br>
+                    • Screenshots ou prints de erro<br>
+                    • Horário em que o problema começou</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão adicional de voltar no rodapé para mobile -->
+        <a href="index.html" class="back-button-mobile">
+            <i class="fas fa-arrow-left"></i>
+            Voltar para Página Principal
+        </a>
+    </div>
+
+    <!-- Modal para Ticket -->
+    <div id="ticketModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 500px;">
+            <h3 style="margin-bottom: 20px;">Abrir Ticket de Suporte</h3>
+            <form id="ticketForm">
+                <input type="text" placeholder="Seu nome" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                <input type="email" placeholder="Seu email" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                <select style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                    <option>Selecione a urgência</option>
+                    <option>Crítico - Sistema inoperante</option>
+                    <option>Alto - Funcionalidade limitada</option>
+                    <option>Normal - Problema não crítico</option>
+                </select>
+                <textarea placeholder="Descreva detalhadamente o problema..." style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; height: 150px;"></textarea>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn" onclick="submitTicket()">Enviar Ticket</button>
+                    <button type="button" class="btn" style="background: #666;" onclick="closeTicketModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Funções para FAQ
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const isActive = answer.classList.contains('active');
+            
+            // Fecha todas as FAQs
+            document.querySelectorAll('.faq-answer').forEach(faq => {
+                faq.classList.remove('active');
+            });
+            
+            // Abre a clicada se não estava ativa
+            if (!isActive) {
+                answer.classList.add('active');
+                element.querySelector('span').textContent = '−';
+            } else {
+                element.querySelector('span').textContent = '+';
+            }
+        }
+
+        // Funções para o modal de ticket
+        function openTicketModal() {
+            document.getElementById('ticketModal').style.display = 'block';
+        }
+
+        function closeTicketModal() {
+            document.getElementById('ticketModal').style.display = 'none';
+        }
+
+        function submitTicket() {
+            // Aqui você implementaria o envio do ticket
+            alert('Ticket enviado com sucesso! Entraremos em contato em breve.');
+            closeTicketModal();
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('ticketModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTicketModal();
+            }
+        });
+
+        // Mostrar/ocultar botão de voltar mobile baseado no tamanho da tela
+        function checkScreenSize() {
+            const backButtonMobile = document.querySelector('.back-button-mobile');
+            if (window.innerWidth <= 768) {
+                backButtonMobile.style.display = 'block';
+            } else {
+                backButtonMobile.style.display = 'none';
+            }
+        }
+
+        // Verificar tamanho da tela ao carregar e redimensionar
+        window.addEventListener('load', checkScreenSize);
+        window.addEventListener('resize', checkScreenSize);
+    </script>
+
+    <!-- Link para Font Awesome (necessário para o ícone) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</body>
+</html>

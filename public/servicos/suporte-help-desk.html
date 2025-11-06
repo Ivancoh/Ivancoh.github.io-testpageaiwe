@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte Help Desk - Soluções de TI Eficientes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        :root {
+            --primary: #0061A8;
+            --secondary: #00A8E8;
+            --accent: #F2CA00;
+            --dark: #0a0a16;
+            --light: #F7F7F7;
+            --gray: #8a94a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* News Ticker */
+        .news-ticker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 10px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .ticker-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-label {
+            background-color: var(--secondary);
+            padding: 5px 15px;
+            font-weight: bold;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-label i {
+            margin-right: 8px;
+        }
+        
+        .ticker-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 24px;
+        }
+        
+        .ticker-items {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+        }
+        
+        .ticker-item {
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-item i {
+            margin-right: 8px;
+            color: var(--light);
+        }
+        
+        .ticker-loading {
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        /* Indicador de atualização */
+        .last-update {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            opacity: 0.8;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        /* Tooltip para notícias */
+        .ticker-tooltip {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 0.8rem;
+            z-index: 1001;
+        }
+        
+        .ticker-item:hover .ticker-tooltip {
+            display: block;
+        }
+        
+        /* Header */
+        
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: var(--dark);
+            padding: 1rem 0;
+            position: sticky;
+            top: 40px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 97, 168, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 97, 168, 0.2);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1002;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: radial-gradient(ellipse at center, #e6f7ff 0%, var(--light) 100%);
+            color: var(--dark);
+            padding: 8rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Animação SVG de Fundo */
+        /* Substitua a animação .support-background por esta: */
+        .support-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+            z-index: 1;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(0, 97, 168, 0.05) 0%, transparent 50%);
+        }
+        
+        .support-svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Tickets entrando */
+        .ticket-incoming {
+            fill: rgba(0, 168, 232, 0.3);
+            stroke: var(--secondary);
+            stroke-width: 1;
+            animation: ticket-in 8s linear infinite;
+        }
+        
+        .ticket-1 { animation-delay: 0s; }
+        .ticket-2 { animation-delay: 2s; }
+        .ticket-3 { animation-delay: 4s; }
+        .ticket-4 { animation-delay: 6s; }
+        
+        /* Tickets sendo processados */
+        .ticket-processing {
+            fill: rgba(242, 202, 0, 0.3);
+            stroke: var(--accent);
+            stroke-width: 1;
+            animation: ticket-process 6s ease-in-out infinite;
+        }
+        
+        /* Tickets resolvidos */
+        .ticket-resolved {
+            fill: rgba(0, 168, 232, 0.2);
+            stroke: var(--secondary);
+            stroke-width: 1;
+            animation: ticket-out 10s linear infinite;
+        }
+        
+        .ticket-resolved-1 { animation-delay: 1s; }
+        .ticket-resolved-2 { animation-delay: 3s; }
+        .ticket-resolved-3 { animation-delay: 5s; }
+        
+        /* Centro de processamento */
+        .support-hub {
+            fill: rgba(0, 97, 168, 0.1);
+            stroke: var(--primary);
+            stroke-width: 2;
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: hub-pulse 12s ease-in-out infinite;
+        }
+        
+        /* Animações */
+        @keyframes ticket-in {
+            0% {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            40% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            60% {
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes ticket-process {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+        
+        @keyframes ticket-out {
+            0% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                transform: translateX(100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes hub-pulse {
+            0%, 100% {
+                stroke-dashoffset: 600;
+                opacity: 0.3;
+            }
+            50% {
+                stroke-dashoffset: 0;
+                opacity: 0.7;
+            }
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 97, 168, 0.2);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 97, 168, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 97, 168, 0.5);
+        }
+        
+        .btn:hover:before {
+            left: 100%;
+        }
+        
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary), transparent);
+            opacity: 0.1;
+            filter: blur(20px);
+        }
+        
+        .element-1 {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .element-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 10%;
+            right: 10%;
+            background: radial-gradient(circle, var(--secondary), transparent);
+            animation: float 12s infinite ease-in-out reverse;
+        }
+        
+        .element-3 {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            right: 20%;
+            animation: float 10s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+            background-color: var(--light);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+        
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 35px rgba(0, 97, 168, 0.15);
+        }
+        
+        .card:hover:before {
+            opacity: 0.05;
+        }
+        
+        .card-img {
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,0,0,0.1), transparent);
+        }
+        
+        .card-content {
+            padding: 1.8rem;
+        }
+        
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+        
+        .card p {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .card-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .card-link i {
+            transition: transform 0.3s;
+        }
+        
+        .card-link:hover {
+            color: var(--secondary);
+        }
+        
+        .card-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* Features Section */
+        .features {
+            background: radial-gradient(ellipse at center, #e6f7ff 0%, var(--light) 100%);
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            border-radius: 15px;
+            background: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        
+        .feature-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 97, 168, 0.1);
+        }
+        
+        .feature-item:hover:before {
+            opacity: 0.05;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px rgba(0, 97, 168, 0.3);
+        }
+        
+        .feature-item h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .feature-item p {
+            color: var(--dark);
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .cta:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: cover;
+        }
+        
+        .cta h2 {
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.9;
+            font-size: 1.2rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #0a0a0f;
+            color: white;
+            padding: 4rem 0 2rem;
+            position: relative;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 97, 168, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            transform: translateY(20px);
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 97, 168, 0.6);
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .modal-close:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: var(--primary);
+        }
+        
+        .modal-header {
+            margin-bottom: 1.5rem;
+            padding-right: 40px;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-body {
+            color: var(--dark);
+            line-height: 1.7;
+        }
+        
+        .modal-body h4 {
+            color: var(--primary);
+            margin: 1.5rem 0 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        .modal-body ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-body li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                transition: right 0.4s ease;
+                z-index: 1001;
+                padding-top: 100px;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+                padding: 0 20px;
+            }
+            
+            nav a {
+                font-size: 1.2rem;
+                padding: 10px 0;
+                display: block;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .mobile-menu.active i:before {
+                content: "\f00d"; /* Ícone X do FontAwesome */
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .news-ticker {
+                font-size: 0.9rem;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+            
+            .modal-header h3 {
+                font-size: 1.5rem;
+            }
+        }
+		
+        .contact-form {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2) !important;
+            margin-left: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3) !important;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-form {
+                padding: 1.5rem;
+                margin: 1.5rem auto 0;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- News Ticker -->
+    <div class="news-ticker">
+        <div class="container ticker-container">
+            <div class="ticker-label">
+                <i class="fas fa-bell"></i> BENEFÍCIOS
+            </div>
+            <div class="ticker-content">
+                <div class="ticker-items" id="tickerItems">
+                    <div class="ticker-loading">
+                        <i class="fas fa-sync fa-spin"></i> Buscando benefícios do suporte help desk...
+                    </div>
+                </div>
+                <div class="last-update" id="lastUpdate"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-headset logo-icon"></i>
+                <div class="logo-text"><a href="https://www.aiwe.com.br/">Aiwe Tech Solutions - Suporte Help-Desk</a></div>
+            </div>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#solucoes">Soluções</a></li>
+                    <li><a href="#recursos">Recursos</a></li>
+                    <li><a href="#vantagens">Vantagens</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+	
+        <!-- Animação SVG de Fundo -->
+        <div class="support-background">
+            <svg class="support-svg" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+                <!-- Centro de processamento -->
+                <rect x="500" y="200" width="200" height="200" rx="15" class="support-hub"/>
+                
+                <!-- Tickets entrando -->
+                <rect x="100" y="250" width="80" height="40" rx="5" class="ticket-incoming ticket-1"/>
+                <rect x="100" y="320" width="80" height="40" rx="5" class="ticket-incoming ticket-2"/>
+                <rect x="100" y="180" width="80" height="40" rx="5" class="ticket-incoming ticket-3"/>
+                
+                <!-- Tickets sendo processados -->
+                <rect x="550" y="250" width="100" height="50" rx="8" class="ticket-processing"/>
+                
+                <!-- Tickets resolvidos -->
+                <rect x="800" y="250" width="80" height="40" rx="5" class="ticket-resolved ticket-resolved-1"/>
+                <rect x="800" y="320" width="80" height="40" rx="5" class="ticket-resolved ticket-resolved-2"/>
+                <rect x="800" y="180" width="80" height="40" rx="5" class="ticket-resolved ticket-resolved-3"/>
+            </svg>
+        </div>
+	
+        <div class="floating-elements">
+           <div class="floating-element element-1"></div>
+           <div class="floating-element element-2"></div>
+           <div class="floating-element element-3"></div>
+        </div>
+        <div class="container hero-content">
+            <h1>Suporte Help Desk para sua Empresa</h1>
+            <p>Otimize sua operação de TI com nosso serviço de help desk especializado. Suporte 24/7, resolução rápida de problemas e aumento da produtividade da sua equipe.</p>
+			<a href="https://wa.me/555131992982?text=Olá! Gostaria de mais informações sobre o serviço de Suporte Help-Desk." target="_blank" class="btn" rel="noopener noreferrer">Solicitar Demonstração</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="main-content" id="solucoes">
+        <div class="container">
+            <div class="section-title">
+                <h2>Por que Escolher Nosso Help Desk?</h2>
+                <p>Soluções especializadas para otimizar sua operação de TI</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Resolução Rápida</h3>
+                        <p>Nossa equipe resolve problemas técnicos em tempo recorde, minimizando o tempo de inatividade e maximizando a produtividade.</p>
+                        <a class="card-link" data-modal="modal1">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Redução de Custos</h3>
+                        <p>Elimine gastos com contratação e treinamento de equipe interna. Economize até 40% com nosso serviço especializado.</p>
+                        <a class="card-link" data-modal="modal2">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Suporte 24/7</h3>
+                        <p>Nossa equipe está disponível 24 horas por dia, 7 dias por semana para resolver qualquer problema técnico que surgir.</p>
+                        <a class="card-link" data-modal="modal3">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title" id="recursos">
+                <h2>Recursos do Nosso Help Desk</h2>
+                <p>Tecnologia de ponta para suporte eficiente</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Sistema de Tickets</h3>
+                        <p>Organização eficiente de solicitações com priorização automática e acompanhamento em tempo real.</p>
+                        <a class="card-link" data-modal="modal4">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Suporte Multiplataforma</h3>
+                        <p>Atendimento via chat, telefone, email e acesso remoto para resolver problemas rapidamente.</p>
+                        <a class="card-link" data-modal="modal5">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Relatórios Detalhados</h3>
+                        <p>Dashboard completo com métricas de desempenho, tempo de resposta e satisfação do cliente.</p>
+                        <a class="card-link" data-modal="modal6">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="vantagens">
+        <div class="container">
+            <div class="section-title">
+                <h2>Vantagens do Help Desk</h2>
+                <p>Por que empresas confiam em nossa solução de suporte</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-money-bill-wave feature-icon"></i>
+                    <h3>Economia Financeira</h3>
+                    <p>Redução de custos com equipe interna e aumento da produtividade dos colaboradores.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-bolt feature-icon"></i>
+                    <h3>Resolução Rápida</h3>
+                    <p>Problemas resolvidos em média em menos de 15 minutos, minimizando tempo de inatividade.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-expand-arrows-alt feature-icon"></i>
+                    <h3>Escalabilidade</h3>
+                    <p>Cresça sem preocupações com soluções que se adaptam do pequeno negócio à grande empresa.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-headset feature-icon"></i>
+                    <h3>Suporte Especializado</h3>
+                    <p>Equipe técnica certificada disponível 24/7 para resolver qualquer problema técnico.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contato">
+        <div class="container">
+            <h2>Otimize Seu Suporte Técnico</h2>
+            <p>Entre em contato conosco para uma avaliação gratuita da sua operação de TI e descubra como nossa solução de help desk pode aumentar a produtividade e reduzir custos.</p>
+            
+            <!-- Botão para abrir o formulário -->
+            <button class="btn" id="openFormBtn">Agendar Demonstração</button>
+            
+            <!-- Formulário (inicialmente oculto) -->
+            <div class="contact-form" id="contactForm" style="display: none;">
+                <form id="demoForm" netlify name="demo-request" method="POST" data-netlify="true">
+                    <input type="hidden" name="form-name" value="demo-request">
+                    
+                    <div class="form-group">
+                        <label for="company">Empresa *</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Nome Completo *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Telefone/WhatsApp *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employees">Número de Funcionários</label>
+                        <select id="employees" name="employees">
+                            <option value="">Selecione...</option>
+                            <option value="1-10">1-10 funcionários</option>
+                            <option value="11-50">11-50 funcionários</option>
+                            <option value="51-200">51-200 funcionários</option>
+                            <option value="201-500">201-500 funcionários</option>
+                            <option value="500+">Mais de 500 funcionários</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Informações Adicionais</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Descreva brevemente suas necessidades atuais de suporte..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preferred-date">Data Preferida para Demonstração</label>
+                        <input type="date" id="preferred-date" name="preferred-date">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preferred-time">Horário Preferido</label>
+                        <select id="preferred-time" name="preferred-time">
+                            <option value="">Qualquer horário</option>
+                            <option value="manha">Manhã (9h-12h)</option>
+                            <option value="tarde">Tarde (14h-18h)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn">Enviar Solicitação</button>
+                    <button type="button" class="btn btn-secondary" id="closeFormBtn">Cancelar</button>
+                </form>
+            </div>
+            
+            <!-- Mensagem de confirmação -->
+            <div id="formSuccess" style="display: none; text-align: center; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; color: #4CAF50; margin-bottom: 1rem;"></i>
+                <h3>Solicitação Enviada com Sucesso!</h3>
+                <p>Entraremos em contato em até 24 horas para confirmar o agendamento da sua demonstração.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Aiwe Tech Solutions</h3>
+                    <p>Especialistas em suporte técnico e soluções de help desk para empresas de todos os tamanhos. Otimizando sua operação de TI.</p>
+                    <div class="social-links">
+                        <a href="http://facebook.com/profile.php?id=61554940234363" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com/company/101457859/admin/feed/posts/?feedType=following" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/aiwe_tech_solutions?igsh=MW12enNrb3UwN3Q5Zw%3D%3D" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Início</a></li>
+                        <li><a href="#solucoes">Soluções</a></li>
+                        <li><a href="#recursos">Recursos</a></li>
+                        <li><a href="#vantagens">Vantagens</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Conheça Nossos Serviços</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://www.aiwe.com.br/servicos/firewall.html" target="_blank">Firewall as a Service</a></li>
+                        <li><a href="https://www.aiwe.com.br/servicos/backup.html" target="_blank">Backup de Dados</a></li>
+                        <li><a href="https://www.aiwe.com.br/servicos/gestao-ti.html" target="_blank">Gestão de TI</a></li>
+                        <li><a href="https://www.aiwe.com.br/servicos/servicos-personalizados" target="_blank">Serviços Personalizadas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> Porto Alegre/RS</li>
+                        <li><i class="fas fa-phone"></i> (51) 3199-2982</li>
+                        <li><i class="fas fa-envelope"></i> contato@aiwe.com.br</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Aiwe Tech Solutions. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <!-- Modais -->
+    <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-header">
+            <h3 id="modalTitle">Título do Modal</h3>
+        </div>
+        <div class="modal-body" id="modalBody">
+            Conteúdo do modal será inserido aqui.
+        </div>
+        <div class="modal-footer">
+            <!-- Versão com URL encoded -->
+            <a href="https://wa.me/555131992982?text=Olá! Gostaria de solicitar uma avaliação gratuita para serviço de Suporte Help-Desk." 
+               target="_blank" 
+               class="btn" 
+               rel="noopener noreferrer">
+               Solicitar Demonstração
+            </a>
+        </div>
+    </div>
+</div>
+
+    <script>
+        // Dados dos modais
+        const modalData = {
+            modal1: {
+                title: "Resolução Rápida de Problemas",
+                content: `
+                    <p>Nosso sistema de help desk é otimizado para resolver problemas técnicos rapidamente, minimizando o tempo de inatividade:</p>
+                    
+                    <h4>Tempo Médio de Resolução</h4>
+                    <ul>
+                        <li>Problemas simples: resolvidos em menos de 15 minutos</li>
+                        <li>Problemas complexos: resolvidos em menos de 2 horas</li>
+                        <li>Incidentes críticos: resolução prioritária em tempo real</li>
+                        <li>Taxa de resolução na primeira chamada: 85%</li>
+                    </ul>
+                    
+                    <h4>Metodologia de Atendimento</h4>
+                    <ul>
+                        <li>Triagem inteligente de tickets</li>
+                        <li>Roteiro de solução para problemas comuns</li>
+                        <li>Base de conhecimento atualizada</li>
+                        <li>Escalonamento automático para especialistas</li>
+                    </ul>
+                    
+                    <h4>Ferramentas de Diagnóstico</h4>
+                    <ul>
+                        <li>Acesso remoto seguro para diagnóstico rápido</li>
+                        <li>Monitoramento proativo de sistemas</li>
+                        <li>Alertas automáticos de problemas</li>
+                        <li>Relatórios de performance em tempo real</li>
+                    </ul>
+                `
+            },
+            modal2: {
+                title: "Redução de Custos com Help Desk",
+                content: `
+                    <p>Nossa solução de help desk ajuda empresas a reduzirem significativamente seus custos com TI:</p>
+                    
+                    <h4>Economia com Equipe Interna</h4>
+                    <ul>
+                        <li>Eliminação de custos com recrutamento e seleção</li>
+                        <li>Redução de despesas com treinamento e certificações</li>
+                        <li>Economia com salários, benefícios e encargos</li>
+                        <li>Não há custos com turnover de equipe</li>
+                    </ul>
+                    
+                    <h4>Otimização de Processos</h4>
+                    <ul>
+                        <li>Automatização de tarefas repetitivas</li>
+                        <li>Redução do tempo de inatividade dos colaboradores</li>
+                        <li>Melhoria na produtividade geral da empresa</li>
+                        <li>Prevenção de problemas com manutenção proativa</li>
+                    </ul>
+                    
+                    <h4>Modelo de Preços Transparente</h4>
+                    <ul>
+                        <li>Custo fixo mensal previsível</li>
+                        <li>Sem taxas ocultas ou surpresas na fatura</li>
+                        <li>Escalonamento conforme crescimento</li>
+                        <li>Relatórios detalhados de ROI</li>
+                    </ul>
+                `
+            },
+            modal3: {
+                title: "Suporte 24/7 para Sua Empresa",
+                content: `
+                    <p>Oferecemos suporte técnico ininterrupto para garantir a continuidade dos seus negócios:</p>
+                    
+                    <h4>Cobertura Completa</h4>
+                    <ul>
+                        <li>Atendimento 24 horas por dia, 7 dias por semana</li>
+                        <li>Suporte durante finais de semana e feriados</li>
+                        <li>Plantão para emergências fora do horário comercial</li>
+                        <li>Cobertura para fusos horários diferentes</li>
+                    </ul>
+                    
+                    <h4>Canais de Atendimento</h4>
+                    <ul>
+                        <li>Telefone dedicado para urgências</li>
+                        <li>Chat online em tempo real</li>
+                        <li>Email com resposta garantida em 1 hora</li>
+                        <li>Portal de autoatendimento 24/7</li>
+                    </ul>
+                    
+                    <h4>Equipe Especializada</h4>
+                    <ul>
+                        <li>Analistas de plantão para atendimento imediato</li>
+                        <li>Especialistas disponíveis para escalonamento</li>
+                        <li>Gestores de conta para acompanhamento</li>
+                        <li>Suporte multilíngua para empresas internacionais</li>
+                    </ul>
+                `
+            },
+            modal4: {
+                title: "Sistema de Tickets Inteligente",
+                content: `
+                    <p>Nosso sistema de tickets organiza e prioriza automaticamente as solicitações de suporte:</p>
+                    
+                    <h4>Funcionalidades do Sistema</h4>
+                    <ul>
+                        <li>Criação de tickets via múltiplos canais</li>
+                        <li>Priorização automática por urgência e impacto</li>
+                        <li>Encaminhamento para o especialista correto</li>
+                        <li>Acompanhamento em tempo real do status</li>
+                    </ul>
+                    
+                    <h4>Automatização e Eficiência</h4>
+                    <ul>
+                        <li>Respostas automáticas para perguntas frequentes</li>
+                        <li>Roteiros de solução para problemas comuns</li>
+                        <li>Integração com base de conhecimento</li>
+                        <li>Alertas proativos para prazos próximos</li>
+                    </ul>
+                    
+                    <h4>Relatórios e Métricas</h4>
+                    <ul>
+                        <li>Tempo médio de resposta e resolução</li>
+                        <li>Taxa de satisfação do cliente</li>
+                        <li>Volume de tickets por categoria</li>
+                        <li>Desempenho individual dos analistas</li>
+                    </ul>
+                `
+            },
+            modal5: {
+                title: "Suporte Multiplataforma",
+                content: `
+                    <p>Atendemos seus colaboradores através de diversos canais para maior conveniência:</p>
+                    
+                    <h4>Canais de Atendimento</h4>
+                    <ul>
+                        <li>Telefone com número dedicado</li>
+                        <li>Chat online integrado ao sistema</li>
+                        <li>Email com templates personalizados</li>
+                        <li>Portal de autoatendimento 24/7</li>
+                    </ul>
+                    
+                    <h4>Acesso Remoto</h4>
+                    <ul>
+                        <li>Conexão segura para diagnóstico remoto</li>
+                        <li>Resolução de problemas sem deslocamento</li>
+                        <li>Suporte a diferentes sistemas operacionais</li>
+                        <li>Compatibilidade com dispositivos móveis</li>
+                    </ul>
+                    
+                    <h4>Integrações</h4>
+                    <ul>
+                        <li>Slack e Microsoft Teams para notificações</li>
+                        <li>Apps móveis para acompanhamento</li>
+                        <li>APIs para integração com outros sistemas</li>
+                        <li>Single Sign-On (SSO) para acesso facilitado</li>
+                    </ul>
+                `
+            },
+            modal6: {
+                title: "Relatórios e Analytics",
+                content: `
+                    <p>Sistema completo de relatórios para acompanhamento do desempenho do suporte:</p>
+                    
+                    <h4>Dashboard em Tempo Real</h4>
+                    <ul>
+                        <li>Visão geral do volume de tickets</li>
+                        <li>Métricas de tempo de resposta e resolução</li>
+                        <li>Indicadores de satisfação do cliente</li>
+                        <li>Status de tickets em aberto e resolvidos</li>
+                    </ul>
+                    
+                    <h4>Relatórios Personalizáveis</h4>
+                    <ul>
+                        <li>Relatórios por período (hora, dia, semana, mês)</li>
+                        <li>Filtros por departamento, prioridade ou categoria</li>
+                        <li>Exportação em PDF, CSV e Excel</li>
+                        <li>Agendamento de relatórios automáticos</li>
+                    </ul>
+                    
+                    <h4>Análise de Performance</h4>
+                    <ul>
+                        <li>Identificação de problemas recorrentes</li>
+                        <li>Análise de tendências e sazonalidade</li>
+                        <li>Métricas de produtividade da equipe</li>
+                        <li>Indicadores de ROI e eficiência</li>
+                    </ul>
+                `
+            }
+        };
+
+        // Ícones para diferentes tipos de benefícios
+        const NEWS_ICONS = {
+            default: 'fas fa-chart-line',
+            economy: 'fas fa-money-bill-wave',
+            productivity: 'fas fa-bolt',
+            satisfaction: 'fas fa-smile',
+            efficiency: 'fas fa-cogs',
+            growth: 'fas fa-seedling',
+            support: 'fas fa-headset'
+        };
+
+        // Cache no localStorage
+        const CACHE_KEYS = {
+            NEWS: 'aiwe_helpdesk_news_cache',
+            TIMESTAMP: 'aiwe_helpdesk_news_timestamp'
+        };
+
+        // Variáveis de controle da animação
+        let tickerAnimation = null;
+        let isTickerPaused = false;
+
+        // Função para buscar notícias sobre benefícios do help desk
+        async function fetchHelpDeskBenefits() {
+            try {
+                // Verifica cache primeiro (6 horas)
+                const cachedData = getCachedNews();
+                if (cachedData) {
+                    displayBenefits(cachedData);
+                    updateLastUpdateTime(cachedData.timestamp);
+                    return;
+                }
+        
+                console.log('Buscando benefícios do help desk...');
+                
+                const queries = [
+                    'help+desk+economia+pequenos+negócios',
+                    'TI+suporte+custo+poupança', 
+                    'terceirizar+TI+suporte+benefícios',
+                    'produtividade+TI+help+de\fsk'
+                ];
+                
+                const randomQuery = queries[Math.floor(Math.random() * queries.length)];
+                const functionUrl = '/.netlify/functions/gnews-proxy?q=' + encodeURIComponent(randomQuery) + '&max=5';
+                
+                const response = await fetch(functionUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`Erro na function: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Processa e salva no cache
+                const newsData = {
+                    articles: data.articles,
+                    timestamp: Date.now(),
+                    query: randomQuery,
+                    source: data.source
+                };
+                
+                saveToCache(newsData);
+                displayBenefits(newsData);
+                updateLastUpdateTime(newsData.timestamp);
+                
+                console.log('Fonte dos benefícios:', data.source);
+                
+            } catch (error) {
+                console.error('Erro ao buscar benefícios:', error);
+                useFallbackBenefits();
+            }
+        }
+        
+        // Funções auxiliares
+        function getCachedNews() {
+            try {
+                const cached = localStorage.getItem(CACHE_KEYS.NEWS);
+                const timestamp = localStorage.getItem(CACHE_KEYS.TIMESTAMP);
+                
+                if (!cached || !timestamp) return null;
+                
+                // Cache válido por 6 horas
+                const isCacheValid = (Date.now() - parseInt(timestamp)) < (6 * 60 * 60 * 1000);
+                
+                return isCacheValid ? JSON.parse(cached) : null;
+            } catch (error) {
+                return null;
+            }
+        }
+        
+        function saveToCache(newsData) {
+            try {
+                localStorage.setItem(CACHE_KEYS.NEWS, JSON.stringify(newsData));
+                localStorage.setItem(CACHE_KEYS.TIMESTAMP, newsData.timestamp.toString());
+            } catch (error) {
+                console.error('Erro ao salvar cache:', error);
+            }
+        }
+
+        // Função para exibir os benefícios
+        function displayBenefits(newsData) {
+            const tickerItems = document.getElementById('tickerItems');
+            
+            // Limpa o conteúdo de carregamento
+            tickerItems.innerHTML = '';
+            
+            // Adiciona os benefícios ao ticker
+            newsData.articles.forEach((article, index) => {
+                const tickerItem = createTickerItem(article, index);
+                tickerItems.appendChild(tickerItem);
+            });
+            
+            // Duplica os itens para criar loop contínuo
+            const items = tickerItems.querySelectorAll('.ticker-item');
+            let totalWidth = 0;
+            
+            items.forEach(item => {
+                const clone = item.cloneNode(true);
+                tickerItems.appendChild(clone);
+                totalWidth += item.offsetWidth + 40;
+            });
+            
+            // Inicia a animação
+            startTickerAnimation(totalWidth);
+        }
+
+        // Função para criar item do ticker
+        function createTickerItem(article, index) {
+            const tickerItem = document.createElement('div');
+            tickerItem.className = 'ticker-item';
+            
+            // Determina o ícone baseado no conteúdo
+            const icon = determineBenefitIcon(article.title + ' ' + article.description);
+            const formattedTitle = formatBenefitTitle(article.title);
+            
+            tickerItem.innerHTML = `
+                <div class="ticker-item-link" 
+                     onclick="openBenefitArticle('${article.url}')"
+                     onmouseenter="pauseTicker()" 
+                     onmouseleave="resumeTicker()"
+                     style="display: flex; align-items: center; text-decoration: none; color: inherit; cursor: pointer; position: relative;">
+                    <i class="${icon}"></i>
+                    <span class="ticker-item-text">${formattedTitle}</span>
+                    <div class="ticker-tooltip">${article.description || article.title}</div>
+                </div>
+            `;
+            
+            return tickerItem;
+        }
+
+        // Função para abrir artigo em nova aba
+        function openBenefitArticle(url) {
+            if (url && url !== 'undefined') {
+                window.open(url, '_blank', 'noopener,noreferrer');
+            } else {
+                console.warn('URL do artigo não disponível');
+            }
+        }
+
+        // Função para pausar o ticker
+        function pauseTicker() {
+            if (tickerAnimation && !isTickerPaused) {
+                tickerAnimation.pause();
+                isTickerPaused = true;
+            }
+        }
+
+        // Função para retomar o ticker
+        function resumeTicker() {
+            if (tickerAnimation && isTickerPaused) {
+                tickerAnimation.play();
+                isTickerPaused = false;
+            }
+        }
+
+        // Função para determinar ícone baseado no conteúdo
+        function determineBenefitIcon(text) {
+            const lowerText = text.toLowerCase();
+            
+            if (lowerText.includes('economy') || lowerText.includes('saving') || lowerText.includes('cost')) {
+                return NEWS_ICONS.economy;
+            } else if (lowerText.includes('productivity') || lowerText.includes('efficiency')) {
+                return NEWS_ICONS.productivity;
+            } else if (lowerText.includes('satisfaction') || lowerText.includes('happy')) {
+                return NEWS_ICONS.satisfaction;
+            } else if (lowerText.includes('growth') || lowerText.includes('expansion')) {
+                return NEWS_ICONS.growth;
+            } else if (lowerText.includes('support') || lowerText.includes('help')) {
+                return NEWS_ICONS.support;
+            }
+            
+            return NEWS_ICONS.default;
+        }
+
+        // Função para formatar título do benefício
+        function formatBenefitTitle(title) {
+            // Remove a fonte do final do título (comum no GNews)
+            let formattedTitle = title.replace(/\s*-\s*\w+(\.\w+)*$/, '');
+            
+            // Limita o tamanho para o ticker
+            if (formattedTitle.length > 80) {
+                formattedTitle = formattedTitle.substring(0, 77) + '...';
+            }
+            
+            return formattedTitle;
+        }
+
+        // Função para atualizar o tempo da última atualização
+        function updateLastUpdateTime(timestamp) {
+            const lastUpdate = document.getElementById('lastUpdate');
+            const date = new Date(timestamp);
+            const timeString = date.toLocaleTimeString('pt-BR', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            lastUpdate.textContent = `Atual: ${timeString}`;
+        }
+
+        // Fallback para quando a API falhar
+        function useFallbackBenefits() {
+            console.log('Usando benefícios de fallback');
+            const fallbackBenefits = [
+                {
+                    title: "Empresas economizam até 40% com terceirização do help desk",
+                    description: "Estudo mostra redução significativa de custos com suporte técnico terceirizado",
+                    url: "https://encontreumnerd.com.br/blog/terceirizacao-de-ti-vs-equipe-interna-analise-completa-de-custos-2025?srsltid=AfmBOoppOVzzbL3FHGfmklgsJu4nOTsJvUhS2HeKVXpGv-SVKgPClKMF"
+                },
+                {
+                    title: "Help desk especializado aumenta produtividade em 25%",
+                    description: "Colaboradores gastam menos tempo com problemas técnicos e mais com suas atividades",
+                    url: "https://faiston.com/service-desk-recurso-critico-para-agilidade-das-operacoes-em-2025/"
+                },
+                {
+                    title: "Satisfação do cliente sobe com resposta rápida do suporte",
+                    description: "Empresas com tempo de resposta inferior a 15 minutos têm maior retenção",
+                    url: "https://www.cnnbrasil.com.br/economia/negocios/customer-experience/#goog_rewarded"
+                },
+                {
+                    title: "Suporte 24/7 reduz tempo de inatividade em 60%",
+                    description: "Problemas resolvidos rapidamente minimizam impacto nos negócios",
+                    url: "https://tiinside.com.br/15/07/2009/custo-por-hora-de-inatividade-de-erp-ultrapassa-us-5-mil/"
+                },
+                {
+                    title: "Terceirização de TI permite foco no core business",
+                    description: "Empresas podem concentrar recursos em atividades estratégicas",
+                    url: "https://blog.algar.com.br/quais-sao-os-beneficios-da-terceirizacao-de-ti-nas-empresas/"
+                }
+            ];
+
+            const newsData = {
+                articles: fallbackBenefits,
+                timestamp: Date.now(),
+                query: 'fallback'
+            };
+
+            displayBenefits(newsData);
+            updateLastUpdateTime(newsData.timestamp);
+        }
+
+        // Função para iniciar animação do ticker
+        function startTickerAnimation(totalWidth) {
+            const tickerItems = document.getElementById('tickerItems');
+            
+            // Remove animação anterior se existir
+            if (tickerAnimation) {
+                tickerAnimation.pause();
+            }
+            
+            // Nova animação
+            tickerAnimation = anime({
+                targets: tickerItems,
+                translateX: [-totalWidth/2, 0],
+                duration: 60000, // 1 minuto para melhor leitura
+                easing: 'linear',
+                loop: true,
+                autoplay: true
+            });
+        }
+
+        // Inicialização quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Busca benefícios imediatamente
+            fetchHelpDeskBenefits();
+            
+            // Agenda atualizações a cada 12 horas
+            setInterval(fetchHelpDeskBenefits, 6 * 60 * 60 * 1000);
+            
+            // Também atualiza quando a página ganha foco (se o usuário voltar depois de um tempo)
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    const cachedData = getCachedNews();
+                    if (cachedData && (Date.now() - cachedData.timestamp) > (2 * 60 * 60 * 1000)) {
+                        // Se o cache tem mais de 2 horas, atualiza
+                        fetchHelpDeskBenefits();
+                    }
+                }
+            });
+
+            // Pausa o ticker quando o mouse entra na área total
+            document.querySelector('.ticker-content').addEventListener('mouseenter', pauseTicker);
+            document.querySelector('.ticker-content').addEventListener('mouseleave', resumeTicker);
+            
+            // Menu mobile
+            const mobileMenu = document.getElementById('mobileMenu');
+            const nav = document.getElementById('mainNav');
+            
+            mobileMenu.addEventListener('click', function() {
+                nav.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                
+                // Animação suave para o menu
+                if (nav.classList.contains('active')) {
+                    anime({
+                        targets: 'nav ul',
+                        opacity: [0, 1],
+                        translateY: [-20, 0],
+                        duration: 500,
+                        easing: 'easeOutExpo'
+                    });
+                }
+            });
+            
+            // Fechar menu ao clicar em um link
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    nav.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                });
+            });
+            
+            // Botão Voltar ao Topo
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            // Mostrar/ocultar botão ao rolar
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('active');
+                } else {
+                    backToTopBtn.classList.remove('active');
+                }
+            });
+            
+            // Rolar suavemente para o topo
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Sistema de Modais
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalClose = document.getElementById('modalClose');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            // Abrir modal
+            document.querySelectorAll('.card-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-modal');
+                    if (modalData[modalId]) {
+                        modalTitle.textContent = modalData[modalId].title;
+                        modalBody.innerHTML = modalData[modalId].content;
+                        modalOverlay.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            });
+            
+            // Fechar modal
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            
+            modalClose.addEventListener('click', closeModal);
+            
+            // Fechar modal ao clicar fora
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+            
+            // Fechar modal com ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+            
+            // Animação do hero
+            anime({
+                targets: '.hero-content h1',
+                translateY: [-50, 0],
+                opacity: [0, 1],
+                duration: 1200,
+                easing: 'easeOutExpo'
+            });
+            
+            anime({
+                targets: '.hero-content p',
+                translateY: [30, 0],
+                opacity: [0, 1],
+                duration: 1200,
+                delay: 400,
+                easing: 'easeOutExpo'
+            });
+            
+            anime({
+                targets: '.hero-content .btn',
+                translateY: [30, 0],
+                opacity: [0, 1],
+                duration: 1200,
+                delay: 800,
+                easing: 'easeOutExpo'
+            });
+            
+            // Animação dos elementos flutuantes
+            anime({
+                targets: '.floating-element',
+                translateY: function() {
+                    return anime.random(-30, 30);
+                },
+                translateX: function() {
+                    return anime.random(-30, 30);
+                },
+                duration: 5000,
+                loop: true,
+                direction: 'alternate',
+                easing: 'easeInOutSine'
+            });
+            
+            // Animação dos cards ao rolar a página
+            const cards = document.querySelectorAll('.card');
+            const featureItems = document.querySelectorAll('.feature-item');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        anime({
+                            targets: entry.target,
+                            translateY: [60, 0],
+                            opacity: [0, 1],
+                            duration: 1000,
+                            easing: 'easeOutExpo'
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+            
+            featureItems.forEach(item => {
+                observer.observe(item);
+            });
+        });
+		
+		// Controle do formulário de demonstração
+        const openFormBtn = document.getElementById('openFormBtn');
+        const closeFormBtn = document.getElementById('closeFormBtn');
+        const contactForm = document.getElementById('contactForm');
+        const demoForm = document.getElementById('demoForm');
+        const formSuccess = document.getElementById('formSuccess');
+        
+        if (openFormBtn) {
+            openFormBtn.addEventListener('click', function() {
+                contactForm.style.display = 'block';
+                openFormBtn.style.display = 'none';
+                // Rolar suavemente para o formulário
+                contactForm.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+        
+        if (closeFormBtn) {
+            closeFormBtn.addEventListener('click', function() {
+                contactForm.style.display = 'none';
+                openFormBtn.style.display = 'inline-block';
+                demoForm.reset();
+            });
+        }
+        
+        // Manipulação do envio do formulário Netlify
+        if (demoForm) {
+            demoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simulação de envio bem-sucedido
+                contactForm.style.display = 'none';
+                formSuccess.style.display = 'block';
+                formSuccess.scrollIntoView({ behavior: 'smooth' });
+                
+                // Aqui você pode adicionar código para enviar para um webhook adicional se necessário
+                console.log('Formulário enviado com sucesso!');
+                
+                // Opcional: Resetar o formulário após 5 segundos
+                setTimeout(() => {
+                    demoForm.reset();
+                }, 5000);
+            });
+        }
+    </script>
+</body>
+</html>

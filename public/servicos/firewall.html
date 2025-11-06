@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firewall Protection - Segurança de Rede Avançada</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        :root {
+            --primary: #B20000;
+            --secondary: #14161E;
+            --accent: #E85C0D;
+            --dark: #0a0a16;
+            --light: #EFEFEF;
+            --gray: #8a94a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--secondary);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* News Ticker */
+        .news-ticker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            padding: 10px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .ticker-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-label {
+            background-color: var(--accent);
+            padding: 5px 15px;
+            font-weight: bold;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-label i {
+            margin-right: 8px;
+        }
+        
+        .ticker-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 24px;
+        }
+        
+        .ticker-items {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+        }
+        
+        .ticker-item {
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-item i {
+            margin-right: 8px;
+            color: var(--light);
+        }
+        
+        .ticker-loading {
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        /* Indicador de atualização */
+        .last-update {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            opacity: 0.8;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        /* Tooltip para notícias */
+        .ticker-tooltip {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 0.8rem;
+            z-index: 1001;
+        }
+        
+        .ticker-item:hover .ticker-tooltip {
+            display: block;
+        }
+        
+        /* Header */
+        
+        header {
+            background-color: rgba(20, 22, 30, 0.95);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 40px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(178, 0, 0, 0.7);
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(178, 0, 0, 0.3);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1002;
+        }
+        
+        /* Hero Section */
+       .hero {
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, var(--secondary) 100%);
+            color: white;
+            padding: 8rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+        
+         /* Animação SVG de Fundo */
+        .security-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.50;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .security-svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .firewall-box {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 2;
+            stroke-dasharray: 800;
+            stroke-dashoffset: 800;
+            animation: draw 8s ease-in-out infinite;
+        }
+        
+        .data-line {
+            stroke: var(--accent);
+            stroke-width: 1.5;
+            stroke-dasharray: 10;
+            opacity: 0.6;
+        }
+        
+        .incoming { 
+            animation: flow 3s linear infinite; 
+        }
+        
+        .outgoing { 
+            animation: flow 3s linear infinite reverse; 
+            animation-delay: 1.5s;
+        }
+        
+        .shield {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 2;
+            opacity: 0.7;
+            animation: pulse 6s ease-in-out infinite;
+        }
+        
+        .lock-body {
+            fill: rgba(232, 92, 13, 0.3);
+            stroke: var(--accent);
+            stroke-width: 1;
+            animation: lock-pulse 4s ease-in-out infinite;
+        }
+        
+        .lock-hole {
+            fill: var(--secondary);
+            stroke: var(--accent);
+            stroke-width: 1;
+        }
+        
+        .particle {
+            fill: var(--accent);
+            opacity: 0;
+        }
+        
+        .particle-1 { animation: particle-float 8s linear infinite; }
+        .particle-2 { animation: particle-float 8s linear infinite 1s; }
+        .particle-3 { animation: particle-float 8s linear infinite 2s; }
+        .particle-4 { animation: particle-float 8s linear infinite 3s; }
+        .particle-5 { animation: particle-float 8s linear infinite 4s; }
+        .particle-6 { animation: particle-float 8s linear infinite 5s; }
+        
+        .network-node {
+            fill: var(--primary);
+            opacity: 0.4;
+            animation: node-pulse 4s ease-in-out infinite;
+        }
+        
+        .node-1 { animation-delay: 0s; }
+        .node-2 { animation-delay: 1s; }
+        .node-3 { animation-delay: 2s; }
+        .node-4 { animation-delay: 3s; }
+        
+        @keyframes draw {
+            0%, 100% {
+                stroke-dashoffset: 800;
+                opacity: 0.3;
+            }
+            50% {
+                stroke-dashoffset: 0;
+                opacity: 0.7;
+            }
+        }
+        
+        @keyframes flow {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: 20; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% { 
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+        
+        @keyframes lock-pulse {
+            0%, 100% { 
+                fill: rgba(232, 92, 13, 0.2);
+                transform: scale(1);
+            }
+            50% { 
+                fill: rgba(178, 0, 0, 0.3);
+                transform: scale(1.1);
+            }
+        }
+        
+        @keyframes particle-float {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(100px, -50px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes node-pulse {
+            0%, 100% { 
+                opacity: 0.2;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.6;
+                transform: scale(1.2);
+            }
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(178, 0, 0, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(178, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(178, 0, 0, 0.5);
+        }
+        
+        .btn:hover:before {
+            left: 100%;
+        }
+        
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary), transparent);
+            opacity: 0.1;
+            filter: blur(20px);
+        }
+        
+        .element-1 {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .element-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 10%;
+            right: 10%;
+            background: radial-gradient(circle, var(--accent), transparent);
+            animation: float 12s infinite ease-in-out reverse;
+        }
+        
+        .element-3 {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            right: 20%;
+            animation: float 10s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+            background-color: var(--secondary);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .card {
+            background: linear-gradient(145deg, #1c1e28, #0f1015);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.4s;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+        
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 35px rgba(178, 0, 0, 0.2);
+        }
+        
+        .card:hover:before {
+            opacity: 0.1;
+        }
+        
+        .card-img {
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,0,0,0.2), transparent);
+        }
+        
+        .card-content {
+            padding: 1.8rem;
+        }
+        
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+        
+        .card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .card-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .card-link i {
+            transition: transform 0.3s;
+        }
+        
+        .card-link:hover {
+            color: var(--accent);
+        }
+        
+        .card-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* Features Section */
+        .features {
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, var(--secondary) 100%);
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(178, 0, 0, 0.1);
+        }
+        
+        .feature-item:hover:before {
+            opacity: 0.1;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px rgba(178, 0, 0, 0.5);
+        }
+        
+        .feature-item h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .feature-item p {
+            color: var(--gray);
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(178,0,0,0.05)"/></svg>');
+            background-size: cover;
+        }
+        
+        .cta h2 {
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.9;
+            font-size: 1.2rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #0a0a0f;
+            color: white;
+            padding: 4rem 0 2rem;
+            position: relative;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(178, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            transform: translateY(20px);
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(178, 0, 0, 0.6);
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: linear-gradient(145deg, #1c1e28, #0f1015);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .modal-close:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--primary);
+        }
+        
+        .modal-header {
+            margin-bottom: 1.5rem;
+            padding-right: 40px;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-body {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+        
+        .modal-body h4 {
+            color: var(--light);
+            margin: 1.5rem 0 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        .modal-body ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-body li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: rgba(20, 22, 30, 0.98);
+                backdrop-filter: blur(10px);
+                transition: right 0.4s ease;
+                z-index: 1001;
+                padding-top: 100px;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+                padding: 0 20px;
+            }
+            
+            nav a {
+                font-size: 1.2rem;
+                padding: 10px 0;
+                display: block;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .mobile-menu.active i:before {
+                content: "\f00d"; /* Ícone X do FontAwesome */
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .news-ticker {
+                font-size: 0.9rem;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+            
+            .modal-header h3 {
+                font-size: 1.5rem;
+            }
+        }
+		
+		.contact-form {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2) !important;
+            margin-left: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3) !important;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-form {
+                padding: 1.5rem;
+                margin: 1.5rem auto 0;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- News Ticker -->
+    <div class="news-ticker">
+        <div class="container ticker-container">
+            <div class="ticker-label">
+                <i class="fas fa-bell"></i> ALERTAS
+            </div>
+            <div class="ticker-content">
+                <div class="ticker-items" id="tickerItems">
+                    <div class="ticker-loading">
+                        <i class="fas fa-sync fa-spin"></i> Buscando últimas notícias de segurança...
+                    </div>
+                </div>
+                <div class="last-update" id="lastUpdate"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt logo-icon"></i>
+                <div class="logo-text"><a href="https://www.aiwe.com.br/">Aiwe Tech Solutions - Firewall</a></div>
+            </div>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#solucoes">Soluções</a></li>
+                    <li><a href="#recursos">Recursos</a></li>
+                    <li><a href="#vantagens">Vantagens</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+	
+        <!-- Animação SVG de Fundo -->
+        <div class="security-background">
+            <svg class="security-svg" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+                <!-- Firewall Box Central -->
+                <rect x="400" y="200" width="400" height="200" rx="15" class="firewall-box"/>
+                
+                <!-- Linhas de Dados Entrando -->
+                <path d="M100,300 L400,300" class="data-line incoming"/>
+                <path d="M100,250 L400,250" class="data-line incoming"/>
+                <path d="M100,350 L400,350" class="data-line incoming"/>
+                
+                <!-- Linhas de Dados Saindo -->
+                <path d="M800,300 L1100,300" class="data-line outgoing"/>
+                <path d="M800,250 L1100,250" class="data-line outgoing"/>
+                <path d="M800,350 L1100,350" class="data-line outgoing"/>
+                
+                <!-- Escudos de Proteção -->
+                <path d="M500,150 Q550,100 600,150 T700,200 T500,350 T300,200 T400,150 T500,150" class="shield"/>
+                <path d="M300,100 Q400,50 500,100 T700,150 T500,400 T200,150 T300,100" class="shield"/>
+                
+                <!-- Cadeados -->
+                <rect x="550" y="250" width="60" height="80" rx="8" class="lock-body"/>
+                <circle cx="580" cy="270" r="12" class="lock-hole"/>
+                
+                <rect x="650" y="270" width="40" height="60" rx="5" class="lock-body"/>
+                <circle cx="670" cy="290" r="8" class="lock-hole"/>
+                
+                <!-- Partículas Flutuantes -->
+                <circle cx="200" cy="150" r="3" class="particle particle-1"/>
+                <circle cx="1000" cy="100" r="3" class="particle particle-2"/>
+                <circle cx="150" cy="400" r="3" class="particle particle-3"/>
+                <circle cx="1050" cy="450" r="3" class="particle particle-4"/>
+                <circle cx="300" cy="500" r="3" class="particle particle-5"/>
+                <circle cx="900" cy="550" r="3" class="particle particle-6"/>
+                
+                <!-- Nós de Rede -->
+                <circle cx="200" cy="200" r="8" class="network-node node-1"/>
+                <circle cx="1000" cy="200" r="8" class="network-node node-2"/>
+                <circle cx="150" cy="400" r="8" class="network-node node-3"/>
+                <circle cx="1050" cy="400" r="8" class="network-node node-4"/>
+            </svg>
+        </div>
+	
+        <div class="floating-elements">
+           <div class="floating-element element-1"></div>
+           <div class="floating-element element-2"></div>
+           <div class="floating-element element-3"></div>
+        </div>
+        <div class="container hero-content">
+            <h1>Firewall pfSense para sua Empresa</h1>
+            <p>Proteja sua rede contra ameaças cibernéticas avançadas com nossa solução baseada em pfSense. Monitoramento 24/7, detecção de intrusões e filtragem inteligente de conteúdo.</p>
+            <a href="https://wa.me/555131992982?text=Olá! Gostaria de mais informações sobre o serviço de Firewall." target="_blank" class="btn" rel="noopener noreferrer">Solicitar Demonstração</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="main-content" id="solucoes">
+        <div class="container">
+            <div class="section-title">
+                <h2>Por que Escolher Nosso Firewall pfSense?</h2>
+                <p>Soluções avançadas baseadas na plataforma pfSense para proteger sua infraestrutura</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Proteção Contra Ameaças Avançadas</h3>
+                        <p>Nosso firewall pfSense utiliza pfBlockerNG e Suricata para detectar e bloquear ameaças em tempo real, incluindo malware, ransomware e ataques de dia zero.</p>
+                        <a class="card-link" data-modal="modal1">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Alta Performance</h3>
+                        <p>Arquitetura otimizada do pfSense que não compromete a velocidade da sua rede, mesmo com todas as camadas de segurança ativadas.</p>
+                        <a class="card-link" data-modal="modal2">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Gestão Centralizada</h3>
+                        <p>Interface intuitiva do pfSense para gerenciar todas as políticas de segurança, relatórios e monitoramento de múltiplos dispositivos.</p>
+                        <a class="card-link" data-modal="modal3">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title" id="recursos">
+                <h2>Recursos Exclusivos do pfSense</h2>
+                <p>Tecnologia de ponta para segurança máxima</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>IDS/IPS com Suricata</h3>
+                        <p>Sistema de Detecção e Prevenção de Intrusões baseado no Suricata para análise comportamental e detecção de anomalias.</p>
+                        <a class="card-link" data-modal="modal4">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-filter"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Filtragem de Conteúdo</h3>
+                        <p>Controle de acesso a sites e aplicações com Squid e pfBlockerNG, com categorização inteligente e políticas personalizáveis.</p>
+                        <a class="card-link" data-modal="modal5">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Relatórios Detalhados</h3>
+                        <p>Dashboard completo com métricas de segurança, tráfego de rede e relatórios personalizáveis para auditoria e compliance.</p>
+                        <a class="card-link" data-modal="modal6">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="vantagens">
+        <div class="container">
+            <div class="section-title">
+                <h2>Vantagens do pfSense</h2>
+                <p>Por que empresas confiam em nossa solução baseada em pfSense</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-lock feature-icon"></i>
+                    <h3>Código Aberto</h3>
+                    <p>Software de código aberto auditável, sem custos de licenciamento e com comunidade ativa.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-bolt feature-icon"></i>
+                    <h3>Alta Disponibilidade</h3>
+                    <p>Configurações CARP para failover automático garantindo continuidade dos negócios.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-expand-arrows-alt feature-icon"></i>
+                    <h3>Escalabilidade</h3>
+                    <p>Cresça sem preocupações com soluções que se adaptam do pequeno negócio à grande empresa.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-headset feature-icon"></i>
+                    <h3>Suporte Especializado</h3>
+                    <p>Equipe técnica certificada em pfSense disponível 24/7 para resolver qualquer problema.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contato">
+        <div class="container">
+            <h2>Otimize Seu Suporte Técnico</h2>
+            <p>Entre em contato conosco para uma avaliação gratuita da sua operação de TI e descubra como nossa solução de help desk pode aumentar a produtividade e reduzir custos.</p>
+            
+            <!-- Botão para abrir o formulário -->
+            <button class="btn" id="openFormBtn">Agendar Demonstração</button>
+            
+            <!-- Formulário (inicialmente oculto) -->
+            <div class="contact-form" id="contactForm" style="display: none;">
+                <form id="demoForm" netlify name="demo-request" method="POST" data-netlify="true">
+                    <input type="hidden" name="form-name" value="demo-request">
+                    
+                    <div class="form-group">
+                        <label for="company">Empresa *</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Nome Completo *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Telefone/WhatsApp *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employees">Número de Funcionários</label>
+                        <select id="employees" name="employees">
+                            <option value="">Selecione...</option>
+                            <option value="1-10">1-10 funcionários</option>
+                            <option value="11-50">11-50 funcionários</option>
+                            <option value="51-200">51-200 funcionários</option>
+                            <option value="201-500">201-500 funcionários</option>
+                            <option value="500+">Mais de 500 funcionários</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Informações Adicionais</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Descreva brevemente suas necessidades atuais de suporte..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preferred-date">Data Preferida para Demonstração</label>
+                        <input type="date" id="preferred-date" name="preferred-date">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preferred-time">Horário Preferido</label>
+                        <select id="preferred-time" name="preferred-time">
+                            <option value="">Qualquer horário</option>
+                            <option value="manha">Manhã (9h-12h)</option>
+                            <option value="tarde">Tarde (14h-18h)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn">Enviar Solicitação</button>
+                    <button type="button" class="btn btn-secondary" id="closeFormBtn">Cancelar</button>
+                </form>
+            </div>
+            
+            <!-- Mensagem de confirmação -->
+            <div id="formSuccess" style="display: none; text-align: center; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; color: #4CAF50; margin-bottom: 1rem;"></i>
+                <h3>Solicitação Enviada com Sucesso!</h3>
+                <p>Entraremos em contato em até 24 horas para confirmar o agendamento da sua demonstração.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Aiwe Tech Solutions</h3>
+                    <p>Especialistas em segurança de rede e soluções pfSense para empresas de todos os tamanhos. Protegendo seu negócio no ambiente digital.</p>
+                    <div class="social-links">
+                        <a href="http://facebook.com/profile.php?id=61554940234363" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com/company/101457859/admin/feed/posts/?feedType=following" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/aiwe_tech_solutions?igsh=MW12enNrb3UwN3Q5Zw%3D%3D" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Início</a></li>
+                        <li><a href="#solucoes">Soluções</a></li>
+                        <li><a href="#recursos">Recursos</a></li>
+                        <li><a href="#vantagens">Vantagens</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Conheça Nossos Serviços</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://www.aiwe.com.br/servicos/suporte-help-desk.html" target="_blank">Suporte Help-Desk</a></li>
+                        <li><a href="https://www.aiwe.com.br/servicos/backup.html" target="_blank">Backup de Dados</a></li>
+                        <li><a href="https://www.aiwe.com.br/servicos/gestao-ti.html" target="_blank">Gestão de TI</a></li>
+                        <li><a href="https://www.aiwe.com.br/servicos/servicos-personalizados" target="_blank">Serviços Personalizadas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> Porto Alegre/RS</li>
+                        <li><i class="fas fa-phone"></i> (51) 3199-2982</li>
+                        <li><i class="fas fa-envelope"></i> contato@aiwe.com.br</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Aiwe Tech Solutions. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <!-- Modais -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <h3 id="modalTitle">Título do Modal</h3>
+            </div>
+            <div class="modal-body" id="modalBody">
+                Conteúdo do modal será inserido aqui.
+            </div>
+            <div class="modal-footer">
+                <a href="https://wa.me/555131992982?text=Olá! Gostaria de solicitar uma avaliação gratuita para o serviço de Firewall." 
+               target="_blank" 
+               class="btn" 
+               rel="noopener noreferrer">
+               Solicitar Demonstração
+            </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos modais
+        const modalData = {
+            modal1: {
+                title: "Proteção Contra Ameaças Avançadas",
+                content: `
+                    <p>Nossa solução baseada em pfSense oferece proteção multicamada contra as mais diversas ameaças cibernéticas:</p>
+                    
+                    <h4>pfBlockerNG</h4>
+                    <ul>
+                        <li>Bloqueio de IPs maliciosos em tempo real</li>
+                        <li>Filtragem de DNS com listas de ameaças atualizadas</li>
+                        <li>Proteção contra malware, phishing e ransomware</li>
+                        <li>Bloqueio geográfico de tráfego indesejado</li>
+                    </ul>
+                    
+                    <h4>Suricata - IDS/IPS</h4>
+                    <ul>
+                        <li>Detecção e prevenção de intrusões em tempo real</li>
+                        <li>Análise de pacotes de rede profundamente</li>
+                        <li>Atualizações automáticas de regras de ameaças</li>
+                        <li>Proteção contra ataques de dia zero</li>
+                    </ul>
+                    
+                    <h4>OpenVPN + IPsec</h4>
+                    <ul>
+                        <li>VPN segura para acesso remoto</li>
+                        <li>Criptografia de ponta a ponta</li>
+                        <li>Autenticação multifator</li>
+                        <li>Suporte a site-to-site e client-to-site</li>
+                    </ul>
+                `
+            },
+            modal2: {
+                title: "Alta Performance",
+                content: `
+                    <p>O pfSense é conhecido por sua excelente performance mesmo sob carga pesada de tráfego:</p>
+                    
+                    <h4>Arquitetura Otimizada</h4>
+                    <ul>
+                        <li>Baseado no FreeBSD, sistema operacional robusto e estável</li>
+                        <li>Suporte a hardware dedicado ou virtualização</li>
+                        <li>Processamento eficiente de pacotes com PF (Packet Filter)</li>
+                        <li>Balanceamento de carga integrado</li>
+                    </ul>
+                    
+                    <h4>Escalabilidade</h4>
+                    <ul>
+                        <li>Suporte a múltiplos núcleos de processamento</li>
+                        <li>Capacidade para milhares de regras simultâneas</li>
+                        <li>Tráfego de até 10Gbps em hardware adequado</li>
+                        <li>Expansão modular com pacotes adicionais</li>
+                    </ul>
+                    
+                    <h4>Monitoramento de Performance</h4>
+                    <ul>
+                        <li>Dashboard em tempo real do uso de recursos</li>
+                        <li>Gráficos de tráfego e utilização</li>
+                        <li>Alertas de performance e capacidade</li>
+                        <li>Relatórios detalhados de utilização</li>
+                    </ul>
+                `
+            },
+            modal3: {
+                title: "Gestão Centralizada",
+                content: `
+                    <p>Interface web intuitiva para gerenciamento completo da segurança da rede:</p>
+                    
+                    <h4>Painel de Controle Unificado</h4>
+                    <ul>
+                        <li>Visão geral do status de segurança em tempo real</li>
+                        <li>Gestão de políticas de firewall centralizada</li>
+                        <li>Configuração de VLANs e redes virtuais</li>
+                        <li>Monitoramento de usuários e dispositivos</li>
+                    </ul>
+                    
+                    <h4>Configuração Simplificada</h4>
+                    <ul>
+                        <li>Assistentes de configuração para serviços comuns</li>
+                        <li>Backup e restauração de configurações</li>
+                        <li>Atualizações automáticas do sistema</li>
+                        <li>Interface responsiva para acesso mobile</li>
+                    </ul>
+                    
+                    <h4>Multi-tenant</h4>
+                    <ul>
+                        <li>Suporte a múltiplos administradores</li>
+                        <li>Controle de acesso baseado em funções (RBAC)</li>
+                        <li>Segmentação de redes para diferentes departamentos</li>
+                        <li>Relatórios personalizados por grupo</li>
+                    </ul>
+                `
+            },
+            modal4: {
+                title: "IDS/IPS com Suricata",
+                content: `
+                    <p>Sistema avançado de Detecção e Prevenção de Intrusões integrado ao pfSense:</p>
+                    
+                    <h4>Funcionalidades do Suricata</h4>
+                    <ul>
+                        <li>Inspeção profunda de pacotes (DPI)</li>
+                        <li>Detecção baseada em assinaturas e anomalias</li>
+                        <li>Suporte a protocolos HTTP, HTTPS, DNS, FTP, SSH</li>
+                        <li>Detecção de malware na camada de aplicação</li>
+                    </ul>
+                    
+                    <h4>Regras e Atualizações</h4>
+                    <ul>
+                        <li>Mais de 50.000 regras da Emerging Threats</li>
+                        <li>Atualizações automáticas diárias</li>
+                        <li>Regras personalizadas para necessidades específicas</li>
+                        <li>Integração com feeds de inteligência de ameaças</li>
+                    </ul>
+                    
+                    <h4>Modos de Operação</h4>
+                    <ul>
+                        <li>Modo IDS (Detecção) para monitoramento</li>
+                        <li>Modo IPS (Prevenção) para bloqueio ativo</li>
+                        <li>Regras por interface de rede</li>
+                        <li>Alertas em tempo real via email e syslog</li>
+                    </ul>
+                `
+            },
+            modal5: {
+                title: "Filtragem de Conteúdo",
+                content: `
+                    <p>Controle avançado de acesso a conteúdo web e aplicações:</p>
+                    
+                    <h4>Squid Proxy</h4>
+                    <ul>
+                        <li>Cache de conteúdo para melhor performance</li>
+                        <li>Filtragem de URL por categorias</li>
+                        <li>Controle de acesso por usuário/grupo</li>
+                        <li>Relatórios detalhados de acesso web</li>
+                    </ul>
+                    
+                    <h4>pfBlockerNG</h4>
+                    <ul>
+                        <li>Bloqueio de anúncios e trackers</li>
+                        <li>Filtragem de DNS com listas personalizáveis</li>
+                        <li>Bloqueio de malware e phishing</li>
+                        <li>Controle de acesso por horário</li>
+                    </ul>
+                    
+                    <h4>Controle de Aplicações</h4>
+                    <ul>
+                        <li>Bloqueio de aplicações específicas (P2P, streaming)</li>
+                        <li>Limitação de banda por aplicação</li>
+                        <li>Políticas de uso aceitável da internet</li>
+                        <li>Relatórios de conformidade</li>
+                    </ul>
+                `
+            },
+            modal6: {
+                title: "Relatórios Detalhados",
+                content: `
+                    <p>Sistema completo de relatórios e análise de tráfego:</p>
+                    
+                    <h4>Dashboard em Tempo Real</h4>
+                    <ul>
+                        <li>Visão geral do tráfego de rede</li>
+                        <li>Top aplicações e usuários</li>
+                        <li>Alertas de segurança em destaque</li>
+                        <li>Status de serviços e saúde do sistema</li>
+                    </ul>
+                    
+                    <h4>Relatórios Personalizáveis</h4>
+                    <ul>
+                        <li>Relatórios por período (hora, dia, semana, mês)</li>
+                        <li>Filtros por usuário, departamento ou aplicação</li>
+                        <li>Exportação em PDF, CSV e Excel</li>
+                        <li>Agendamento de relatórios automáticos</li>
+                    </ul>
+                    
+                    <h4>Análise de Segurança</h4>
+                    <ul>
+                        <li>Relatórios de tentativas de intrusão</li>
+                        <li>Análise de tráfego bloqueado</li>
+                        <li>Estatísticas de uso da VPN</li>
+                        <li>Conformidade com regulamentações</li>
+                    </ul>
+                `
+            }
+        };
+
+// Configurações específicas por serviço
+const SERVICE_CONFIG = {
+    'firewall': {
+        cacheKey: 'aiwe_firewall_cache',
+        queries: [
+            'firewall segurança empresa Brasil',
+            'ataque cibernético proteção rede', 
+            'ransomware firewall prevenção'
+        ],
+        icons: {
+            default: 'fas fa-exclamation-triangle',
+            ransomware: 'fas fa-lock',
+            phishing: 'fas fa-fish',
+            security: 'fas fa-shield-alt'
+        }
+    },
+    'backup': {
+        cacheKey: 'aiwe_backup_cache', 
+        queries: [
+            'backup dados nuvem empresa',
+            'ransomware backup recuperação dados',
+            'perda dados negócio prevenção'
+        ],
+        icons: {
+            default: 'fas fa-database',
+            ransomware: 'fas fa-lock',
+            data_loss: 'fas fa-exclamation-triangle',
+            cloud: 'fas fa-cloud'
+        }
+    },
+    'gestao-ti': {
+        cacheKey: 'aiwe_gestao_ti_cache',
+        queries: [
+            'gestão TI empresas produtividade',
+            'terceirização TI economia custos',
+            'monitoramento TI infraestrutura'
+        ],
+        icons: {
+            default: 'fas fa-chart-line',
+            economy: 'fas fa-money-bill-wave',
+            productivity: 'fas fa-bolt',
+            management: 'fas fa-server'
+        }
+    },
+    'help-desk': {
+        cacheKey: 'aiwe_helpdesk_cache',
+        queries: [
+            'suporte técnico help desk empresas',
+            'terceirização suporte TI economia',
+            'atendimento remoto TI eficiência'
+        ],
+        icons: {
+            default: 'fas fa-headset',
+            economy: 'fas fa-money-bill-wave', 
+            productivity: 'fas fa-bolt',
+            support: 'fas fa-users'
+        }
+    },
+    'servicos-personalizados': {
+        cacheKey: 'aiwe_custom_services_cache',
+        queries: [
+            'soluções TI personalizadas empresas',
+            'desenvolvimento software sob medida',
+            'consultoria TI transformação digital'
+        ],
+        icons: {
+            default: 'fas fa-cogs',
+            development: 'fas fa-laptop-code',
+            cloud: 'fas fa-cloud',
+            security: 'fas fa-shield-alt'
+        }
+    }
+};
+
+// Detecta o serviço atual baseado na URL da página
+function detectCurrentService() {
+    const path = window.location.pathname;
+    if (path.includes('firewall')) return 'firewall';
+    if (path.includes('backup')) return 'backup';
+    if (path.includes('gestao-ti')) return 'gestao-ti';
+    if (path.includes('help-desk')) return 'help-desk';
+    if (path.includes('servicos-personalizados')) return 'servicos-personalizados';
+    return 'firewall'; // default
+}
+
+// Variáveis de controle da animação
+let tickerAnimation = null;
+let isTickerPaused = false;
+
+// Função principal para buscar notícias
+async function fetchServiceNews() {
+    try {
+        const currentService = detectCurrentService();
+        const config = SERVICE_CONFIG[currentService];
+        
+        // Verifica cache primeiro (6 horas)
+        const cachedData = getCachedNews(config.cacheKey);
+        if (cachedData) {
+            displayNews(cachedData, config);
+            updateLastUpdateTime(cachedData.timestamp);
+            return;
+        }
+
+        console.log(`Buscando notícias para ${currentService}...`);
+        
+        const functionUrl = `/.netlify/functions/gnews-proxy?service=${currentService}&max=5`;
+        
+        const response = await fetch(functionUrl);
+        
+        if (!response.ok) {
+            throw new Error(`Erro na function: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Processa e salva no cache
+        const newsData = {
+            articles: data.articles,
+            timestamp: Date.now(),
+            service: data.service,
+            source: data.source
+        };
+        
+        saveToCache(newsData, config.cacheKey);
+        displayNews(newsData, config);
+        updateLastUpdateTime(newsData.timestamp);
+        
+        console.log('Fonte:', data.source, 'Service:', data.service);
+        
+    } catch (error) {
+        console.error('Erro ao buscar notícias:', error);
+        useFallbackNews();
+    }
+}
+
+// Funções auxiliares
+function getCachedNews(cacheKey) {
+    try {
+        const cached = localStorage.getItem(cacheKey);
+        const timestamp = localStorage.getItem(cacheKey + '_timestamp');
+        
+        if (!cached || !timestamp) return null;
+        
+        // Cache válido por 6 horas
+        const isCacheValid = (Date.now() - parseInt(timestamp)) < (6 * 60 * 60 * 1000);
+        
+        return isCacheValid ? JSON.parse(cached) : null;
+    } catch (error) {
+        return null;
+    }
+}
+
+function saveToCache(newsData, cacheKey) {
+    try {
+        localStorage.setItem(cacheKey, JSON.stringify(newsData));
+        localStorage.setItem(cacheKey + '_timestamp', newsData.timestamp.toString());
+    } catch (error) {
+        console.error('Erro ao salvar cache:', error);
+    }
+}
+
+// Função para exibir as notícias
+function displayNews(newsData, config) {
+    const tickerItems = document.getElementById('tickerItems');
+    
+    // Limpa o conteúdo de carregamento
+    tickerItems.innerHTML = '';
+    
+    // Adiciona as notícias ao ticker
+    newsData.articles.forEach((article, index) => {
+        const tickerItem = createTickerItem(article, index, config);
+        tickerItems.appendChild(tickerItem);
+    });
+    
+    // Duplica os itens para criar loop contínuo
+    const items = tickerItems.querySelectorAll('.ticker-item');
+    let totalWidth = 0;
+    
+    items.forEach(item => {
+        const clone = item.cloneNode(true);
+        tickerItems.appendChild(clone);
+        totalWidth += item.offsetWidth + 40;
+    });
+    
+    // Inicia a animação
+    startTickerAnimation(totalWidth);
+}
+
+// Função para criar item do ticker
+function createTickerItem(article, index, config) {
+    const tickerItem = document.createElement('div');
+    tickerItem.className = 'ticker-item';
+    
+    // Determina o ícone baseado no conteúdo
+    const icon = determineNewsIcon(article.title + ' ' + article.description, config.icons);
+    const formattedTitle = formatNewsTitle(article.title);
+    
+    tickerItem.innerHTML = `
+        <div class="ticker-item-link" 
+             onclick="openNewsArticle('${article.url}')"
+             onmouseenter="pauseTicker()" 
+             onmouseleave="resumeTicker()"
+             style="display: flex; align-items: center; text-decoration: none; color: inherit; cursor: pointer; position: relative;">
+            <i class="${icon}"></i>
+            <span class="ticker-item-text">${formattedTitle}</span>
+            <div class="ticker-tooltip">${article.description || article.title}</div>
+        </div>
+    `;
+    
+    return tickerItem;
+}
+
+// Função para determinar ícone baseado no conteúdo
+function determineNewsIcon(text, icons) {
+    const lowerText = text.toLowerCase();
+    
+    // Lógica genérica que funciona para todos os serviços
+    if (lowerText.includes('ransomware') || lowerText.includes('sequestro')) {
+        return icons.ransomware || icons.default;
+    } else if (lowerText.includes('phishing') || lowerText.includes('golpe')) {
+        return icons.phishing || icons.default;
+    } else if (lowerText.includes('nuvem') || lowerText.includes('cloud')) {
+        return icons.cloud || icons.default;
+    } else if (lowerText.includes('segurança') || lowerText.includes('proteção')) {
+        return icons.security || icons.default;
+    } else if (lowerText.includes('economia') || lowerText.includes('custo')) {
+        return icons.economy || icons.default;
+    } else if (lowerText.includes('produtividade') || lowerText.includes('eficiência')) {
+        return icons.productivity || icons.default;
+    }
+    
+    return icons.default;
+}
+
+// Funções compartilhadas (mantenha as existentes)
+function formatNewsTitle(title) {
+    let formattedTitle = title.replace(/\s*-\s*\w+(\.\w+)*$/, '');
+    if (formattedTitle.length > 80) {
+        formattedTitle = formattedTitle.substring(0, 77) + '...';
+    }
+    return formattedTitle;
+}
+
+function openNewsArticle(url) {
+    if (url && url !== 'undefined') {
+        window.open(url, '_blank', 'noopener,noreferrer');
+    }
+}
+
+function pauseTicker() {
+    if (tickerAnimation && !isTickerPaused) {
+        tickerAnimation.pause();
+        isTickerPaused = true;
+    }
+}
+
+function resumeTicker() {
+    if (tickerAnimation && isTickerPaused) {
+        tickerAnimation.play();
+        isTickerPaused = false;
+    }
+}
+
+function updateLastUpdateTime(timestamp) {
+    const lastUpdate = document.getElementById('lastUpdate');
+    const date = new Date(timestamp);
+    const timeString = date.toLocaleTimeString('pt-BR', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+    });
+    lastUpdate.textContent = `Atual: ${timeString}`;
+}
+
+function startTickerAnimation(totalWidth) {
+    const tickerItems = document.getElementById('tickerItems');
+    
+    if (tickerAnimation) {
+        tickerAnimation.pause();
+    }
+    
+    tickerAnimation = anime({
+        targets: tickerItems,
+        translateX: [-totalWidth/2, 0],
+        duration: 60000,
+        easing: 'linear',
+        loop: true,
+        autoplay: true
+    });
+}
+
+function useFallbackNews() {
+    const currentService = detectCurrentService();
+    const config = SERVICE_CONFIG[currentService];
+    const fallbackNews = SERVICE_FALLBACKS[currentService] || SERVICE_FALLBACKS.firewall;
+    
+    const newsData = {
+        articles: fallbackNews,
+        timestamp: Date.now(),
+        service: currentService
+    };
+
+    displayNews(newsData, config);
+    updateLastUpdateTime(newsData.timestamp);
+}
+
+// Inicialização quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', function() {
+    fetchServiceNews();
+    
+    setInterval(fetchServiceNews, 6 * 60 * 60 * 1000);
+    
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            const currentService = detectCurrentService();
+            const config = SERVICE_CONFIG[currentService];
+            const cachedData = getCachedNews(config.cacheKey);
+            if (cachedData && (Date.now() - cachedData.timestamp) > (2 * 60 * 60 * 1000)) {
+                fetchServiceNews();
+            }
+        }
+    });
+
+    document.querySelector('.ticker-content').addEventListener('mouseenter', pauseTicker);
+    document.querySelector('.ticker-content').addEventListener('mouseleave', resumeTicker);
+});
+            // Menu mobile
+            const mobileMenu = document.getElementById('mobileMenu');
+            const nav = document.getElementById('mainNav');
+            
+            mobileMenu.addEventListener('click', function() {
+                nav.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                
+                // Animação suave para o menu
+                if (nav.classList.contains('active')) {
+                    anime({
+                        targets: 'nav ul',
+                        opacity: [0, 1],
+                        translateY: [-20, 0],
+                        duration: 500,
+                        easing: 'easeOutExpo'
+                    });
+                }
+            });
+            
+            // Fechar menu ao clicar em um link
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    nav.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                });
+            });
+            
+            // Botão Voltar ao Topo
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            // Mostrar/ocultar botão ao rolar
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('active');
+                } else {
+                    backToTopBtn.classList.remove('active');
+                }
+            });
+            
+            // Rolar suavemente para o topo
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Sistema de Modais
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalClose = document.getElementById('modalClose');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            // Abrir modal
+            document.querySelectorAll('.card-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-modal');
+                    if (modalData[modalId]) {
+                        modalTitle.textContent = modalData[modalId].title;
+                        modalBody.innerHTML = modalData[modalId].content;
+                        modalOverlay.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            });
+            
+            // Fechar modal
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            
+            modalClose.addEventListener('click', closeModal);
+            
+            // Fechar modal ao clicar fora
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+            
+            // Fechar modal com ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+            
+            // Animação do hero
+            anime({
+                targets: '.hero-content h1',
+                translateY: [-50, 0],
+                opacity: [0, 1],
+                duration: 1200,
+                easing: 'easeOutExpo'
+            });
+            
+            anime({
+                targets: '.hero-content p',
+                translateY: [30, 0],
+                opacity: [0, 1],
+                duration: 1200,
+                delay: 400,
+                easing: 'easeOutExpo'
+            });
+            
+            anime({
+                targets: '.hero-content .btn',
+                translateY: [30, 0],
+                opacity: [0, 1],
+                duration: 1200,
+                delay: 800,
+                easing: 'easeOutExpo'
+            });
+            
+            // Animação dos elementos flutuantes
+            anime({
+                targets: '.floating-element',
+                translateY: function() {
+                    return anime.random(-30, 30);
+                },
+                translateX: function() {
+                    return anime.random(-30, 30);
+                },
+                duration: 5000,
+                loop: true,
+                direction: 'alternate',
+                easing: 'easeInOutSine'
+            });
+            
+            // Animação dos cards ao rolar a página
+            const cards = document.querySelectorAll('.card');
+            const featureItems = document.querySelectorAll('.feature-item');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        anime({
+                            targets: entry.target,
+                            translateY: [60, 0],
+                            opacity: [0, 1],
+                            duration: 1000,
+                            easing: 'easeOutExpo'
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+            
+            featureItems.forEach(item => {
+                observer.observe(item);
+            });
+        });
+		
+				// Controle do formulário de demonstração
+        const openFormBtn = document.getElementById('openFormBtn');
+        const closeFormBtn = document.getElementById('closeFormBtn');
+        const contactForm = document.getElementById('contactForm');
+        const demoForm = document.getElementById('demoForm');
+        const formSuccess = document.getElementById('formSuccess');
+        
+        if (openFormBtn) {
+            openFormBtn.addEventListener('click', function() {
+                contactForm.style.display = 'block';
+                openFormBtn.style.display = 'none';
+                // Rolar suavemente para o formulário
+                contactForm.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+        
+        if (closeFormBtn) {
+            closeFormBtn.addEventListener('click', function() {
+                contactForm.style.display = 'none';
+                openFormBtn.style.display = 'inline-block';
+                demoForm.reset();
+            });
+        }
+        
+        // Manipulação do envio do formulário Netlify
+        if (demoForm) {
+            demoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simulação de envio bem-sucedido
+                contactForm.style.display = 'none';
+                formSuccess.style.display = 'block';
+                formSuccess.scrollIntoView({ behavior: 'smooth' });
+                
+                // Aqui você pode adicionar código para enviar para um webhook adicional se necessário
+                console.log('Formulário enviado com sucesso!');
+                
+                // Opcional: Resetar o formulário após 5 segundos
+                setTimeout(() => {
+                    demoForm.reset();
+                }, 5000);
+            });
+        }
+    </script>
+</body>
+</html>

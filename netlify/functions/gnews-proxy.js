@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// netlify/functions/gnews-proxy.js
 
 // Fallbacks específicos para cada serviço
 const SERVICE_FALLBACKS = {
@@ -84,59 +84,6 @@ const SERVICE_FALLBACKS = {
   ]
 };
 
-// Queries otimizadas em português para cada serviço
-const SERVICE_QUERIES = {
-  'firewall': [
-    'firewall segurança empresa Brasil',
-    'ataque cibernético proteção rede',
-    'ransomware firewall prevenção',
-    'segurança rede pequenas empresas'
-  ],
-  'backup': [
-    'backup dados nuvem empresa',
-    'ransomware backup recuperação dados', 
-    'perda dados negócio prevenção',
-    'backup automático nuvem segurança'
-  ],
-  'gestao-ti': [
-    'gestão TI empresas produtividade',
-    'terceirização TI economia custos',
-    'monitoramento TI infraestrutura',
-    'otimização TI pequenas empresas'
-  ],
-  'help-desk': [
-    'suporte técnico help desk empresas',
-    'terceirização suporte TI economia',
-    'atendimento remoto TI eficiência', 
-    'suporte 24h produtividade empresas'
-  ],
-  'servicos-personalizados': [
-    'soluções TI personalizadas empresas',
-    'desenvolvimento software sob medida',
-    'consultoria TI transformação digital',
-    'sistemas customizados negócios'
-  ]
-};
-
-// Detecta o serviço baseado na query
-function detectService(query) {
-  const queryLower = query.toLowerCase();
-  
-  if (queryLower.includes('firewall') || queryLower.includes('segurança') || queryLower.includes('ataque')) {
-    return 'firewall';
-  } else if (queryLower.includes('backup') || queryLower.includes('dados') || queryLower.includes('ransomware')) {
-    return 'backup'; 
-  } else if (queryLower.includes('gestão') || queryLower.includes('ti') || queryLower.includes('infraestrutura')) {
-    return 'gestao-ti';
-  } else if (queryLower.includes('help') || queryLower.includes('suporte') || queryLower.includes('atendimento')) {
-    return 'help-desk';
-  } else if (queryLower.includes('personalizad') || queryLower.includes('sob medida') || queryLower.includes('custom')) {
-    return 'servicos-personalizados';
-  }
-  
-  return 'firewall'; // default
-}
-
 exports.handler = async function(event, context) {
   // Configura CORS
   const headers = {
@@ -155,35 +102,28 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    const { q = 'segurança firewall', max = 5, service } = event.queryStringParameters;
+    const { q = 'segurança firewall', max = 5, service = 'firewall' } = event.queryStringParameters;
     const apiKey = process.env.GNEWS_API_KEY;
     
-    // Detecta o serviço automaticamente se não especificado
-    const detectedService = service || detectService(q);
-    
-    console.log('Função executando - Service:', detectedService, 'Query:', q);
+    console.log('Função executando - Service:', service, 'Query:', q);
     
     // Se não tem API key, retorna fallback específico do serviço
     if (!apiKey) {
-      const fallbackNews = SERVICE_FALLBACKS[detectedService] || SERVICE_FALLBACKS.firewall;
+      const fallbackNews = SERVICE_FALLBACKS[service] || SERVICE_FALLBACKS.firewall;
       return {
         statusCode: 200,
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           articles: fallbackNews, 
           source: 'fallback',
-          service: detectedService,
-          message: 'Usando conteúdo AIWE para ' + detectedService
+          service: service,
+          message: 'Usando conteúdo AIWE para ' + service
         })
       };
     }
     
-    // Usa query específica do serviço ou a query recebida
-    const serviceQueries = SERVICE_QUERIES[detectedService] || SERVICE_QUERIES.firewall;
-    const randomQuery = serviceQueries[Math.floor(Math.random() * serviceQueries.length)];
-    const searchQuery = q !== 'segurança firewall' ? q : randomQuery;
-    
-    const url = `https://gnews.io/api/v4/search?q=${encodeURIComponent(searchQuery)}&lang=pt&country=br&max=${max}&apikey=${apiKey}`;
+    // Usando fetch nativo (disponível no ambiente Netlify Functions)
+    const url = `https://gnews.io/api/v4/search?q=${encodeURIComponent(q)}&lang=pt&country=br&max=${max}&apikey=${apiKey}`;
     
     console.log('Buscando notícias da GNews:', url);
     
@@ -197,14 +137,14 @@ exports.handler = async function(event, context) {
 
     // Se não encontrou notícias, usa fallback específico
     if (!data.articles || data.articles.length === 0) {
-      const fallbackNews = SERVICE_FALLBACKS[detectedService] || SERVICE_FALLBACKS.firewall;
+      const fallbackNews = SERVICE_FALLBACKS[service] || SERVICE_FALLBACKS.firewall;
       return {
         statusCode: 200,
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           articles: fallbackNews, 
           source: 'fallback',
-          service: detectedService,
+          service: service,
           message: 'Nenhuma notícia encontrada, usando conteúdo AIWE'
         })
       };
@@ -216,17 +156,16 @@ exports.handler = async function(event, context) {
       body: JSON.stringify({ 
         ...data, 
         source: 'gnews',
-        service: detectedService,
-        message: 'Notícias em tempo real para ' + detectedService
+        service: service,
+        message: 'Notícias em tempo real para ' + service
       })
     };
     
   } catch (error) {
     console.error('Erro na Netlify Function:', error);
     
-    const { q = 'segurança firewall' } = event.queryStringParameters;
-    const detectedService = detectService(q);
-    const fallbackNews = SERVICE_FALLBACKS[detectedService] || SERVICE_FALLBACKS.firewall;
+    const { service = 'firewall' } = event.queryStringParameters;
+    const fallbackNews = SERVICE_FALLBACKS[service] || SERVICE_FALLBACKS.firewall;
     
     return {
       statusCode: 200,
@@ -234,7 +173,7 @@ exports.handler = async function(event, context) {
       body: JSON.stringify({ 
         articles: fallbackNews,
         source: 'fallback',
-        service: detectedService,
+        service: service,
         error: error.message,
         message: 'Erro na API, usando conteúdo AIWE'
       })

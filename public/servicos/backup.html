@@ -8,12 +8,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <style>
         :root {
-            --primary: #0A2342;
-            --secondary: #2E8BC0;
-            --accent: #6DD3CE;
-            --dark: #051426;
-            --light: #EFEFEF;
-            --gray: #8a94a6;
+            --primary: #6D28D9; /* Roxo Profundo - confiança, sabedoria e segurança */
+            --secondary: #0D9488; /* Ciano/Verde Água - frescor, clareza e restauração */
+            --accent: #8B5CF6; /* Roxo Violeta - vibrante para CTAs */
+            --dark: #312E81; /* Azul Índigo Escuro - texto */
+            --light: #FDF4FF; /* Lilás Claríssimo - fundo */
+            --gray: #6B7280; /* Cinza para textos secundários */
         }
         
         * {
@@ -137,7 +137,7 @@
         /* Header */
         
         header {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(253, 244, 255, 0.95);
             color: var(--dark);
             padding: 1rem 0;
             position: sticky;
@@ -162,7 +162,7 @@
         .logo-icon {
             font-size: 2rem;
             color: var(--primary);
-            text-shadow: 0 0 10px rgba(10, 35, 66, 0.7);
+            text-shadow: 0 0 10px rgba(109, 40, 217, 0.7);
         }
         
         .logo-text {
@@ -171,7 +171,7 @@
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(10, 35, 66, 0.3);
+            text-shadow: 0 0 15px rgba(109, 40, 217, 0.3);
         }
         
         nav ul {
@@ -262,7 +262,7 @@
         /* Anéis de sincronização */
         .sync-ring {
             fill: none;
-            stroke: var(--accent);
+            stroke: var(--secondary);
             stroke-width: 3;
             stroke-dasharray: 8;
             opacity: 0.6;
@@ -275,14 +275,14 @@
         
         /* Setas de sincronização */
         .sync-arrow {
-            fill: var(--accent);
+            fill: var(--secondary);
             opacity: 0.8;
             animation: arrow-blink 2s ease-in-out infinite;
         }
         
         /* Linhas de conexão */
         .connection-line {
-            stroke: var(--accent);
+            stroke: var(--secondary);
             stroke-width: 2;
             stroke-dasharray: 6;
             opacity: 0.5;
@@ -302,7 +302,7 @@
         
         /* Partículas de verificação */
         .verification-particle {
-            fill: var(--accent);
+            fill: var(--secondary);
             opacity: 0;
             animation: verification-float 5s ease-in-out infinite;
         }
@@ -373,7 +373,7 @@
             50% { 
                 transform: scale(1.1);
                 opacity: 1;
-                stroke: var(--accent);
+                stroke: var(--secondary);
             }
         }
         
@@ -404,7 +404,7 @@
             left: 50%;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
             opacity: 0.1;
             transform: translate(-50%, -50%);
             animation: glow-pulse 6s ease-in-out infinite;
@@ -428,7 +428,7 @@
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(10, 35, 66, 0.3);
+            text-shadow: 0 0 20px rgba(109, 40, 217, 0.3);
         }
         
         .hero p {
@@ -442,16 +442,18 @@
         
         .btn {
             display: inline-block;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             color: white;
             padding: 1rem 2rem;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(10, 35, 66, 0.3);
+            box-shadow: 0 5px 15px rgba(109, 40, 217, 0.3);
             position: relative;
             overflow: hidden;
+            border: none;
+            cursor: pointer;
         }
         
         .btn:before {
@@ -467,7 +469,7 @@
         
         .btn:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(10, 35, 66, 0.5);
+            box-shadow: 0 10px 25px rgba(109, 40, 217, 0.5);
         }
         
         .btn:hover:before {
@@ -505,7 +507,7 @@
             height: 200px;
             bottom: 10%;
             right: 10%;
-            background: radial-gradient(circle, var(--accent), transparent);
+            background: radial-gradient(circle, var(--secondary), transparent);
             animation: float 12s infinite ease-in-out reverse;
         }
         
@@ -560,12 +562,12 @@
         }
         
         .card {
-            background: linear-gradient(145deg, #ffffff, #e0e0e0);
+            background: linear-gradient(145deg, #ffffff, #f5f0ff);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(109, 40, 217, 0.1);
             transition: all 0.4s;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(109, 40, 217, 0.1);
             position: relative;
             z-index: 1;
         }
@@ -585,7 +587,7 @@
         
         .card:hover {
             transform: translateY(-15px);
-            box-shadow: 0 15px 35px rgba(10, 35, 66, 0.1);
+            box-shadow: 0 15px 35px rgba(109, 40, 217, 0.15);
         }
         
         .card:hover:before {
@@ -673,7 +675,7 @@
             border-radius: 15px;
             background: rgba(255,255,255,0.8);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(109, 40, 217, 0.1);
             transition: all 0.4s;
             position: relative;
             overflow: hidden;
@@ -693,7 +695,7 @@
         
         .feature-item:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(10, 35, 66, 0.1);
+            box-shadow: 0 15px 30px rgba(109, 40, 217, 0.1);
         }
         
         .feature-item:hover:before {
@@ -704,7 +706,7 @@
             font-size: 3rem;
             color: var(--primary);
             margin-bottom: 1.5rem;
-            text-shadow: 0 0 15px rgba(10, 35, 66, 0.5);
+            text-shadow: 0 0 15px rgba(109, 40, 217, 0.5);
         }
         
         .feature-item h3 {
@@ -736,7 +738,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(10,35,66,0.05)"/></svg>');
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(109,40,217,0.05)"/></svg>');
             background-size: cover;
         }
         
@@ -771,7 +773,7 @@
         
         .footer-column h3 {
             margin-bottom: 1.5rem;
-            color: var(--accent);
+            color: var(--secondary);
             position: relative;
             padding-bottom: 10px;
             font-size: 1.3rem;
@@ -784,7 +786,7 @@
             left: 0;
             width: 40px;
             height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
         }
         
         .footer-links {
@@ -802,7 +804,7 @@
         }
         
         .footer-links a:hover {
-            color: var(--accent);
+            color: var(--secondary);
         }
         
         .social-links {
@@ -825,7 +827,7 @@
         }
         
         .social-links a:hover {
-            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
             transform: translateY(-5px);
         }
         
@@ -844,7 +846,7 @@
             right: 30px;
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             border-radius: 50%;
             display: flex;
@@ -852,7 +854,7 @@
             justify-content: center;
             font-size: 1.2rem;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(10, 35, 66, 0.4);
+            box-shadow: 0 5px 15px rgba(109, 40, 217, 0.4);
             transition: all 0.3s ease;
             opacity: 0;
             visibility: hidden;
@@ -868,7 +870,7 @@
         
         .back-to-top:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(10, 35, 66, 0.6);
+            box-shadow: 0 8px 20px rgba(109, 40, 217, 0.6);
         }
         
         /* Modal */
@@ -894,7 +896,7 @@
         }
         
         .modal-content {
-            background: linear-gradient(145deg, #ffffff, #e0e0e0);
+            background: linear-gradient(145deg, #ffffff, #f5f0ff);
             border-radius: 15px;
             width: 90%;
             max-width: 800px;
@@ -983,7 +985,7 @@
                 right: -100%;
                 width: 80%;
                 height: 100vh;
-                background: rgba(255, 255, 255, 0.98);
+                background: rgba(253, 244, 255, 0.98);
                 backdrop-filter: blur(10px);
                 transition: right 0.4s ease;
                 z-index: 1001;
@@ -1044,7 +1046,7 @@
             }
         }
 		
-		        .contact-form {
+        .contact-form {
             max-width: 600px;
             margin: 2rem auto 0;
             background: rgba(255, 255, 255, 0.1);
@@ -1140,7 +1142,7 @@
         <div class="container header-container">
             <div class="logo">
                 <i class="fas fa-cloud-upload-alt logo-icon"></i>
-                <div class="logo-text"><a href="https://www.aiwe.com.br/">Aiwe Tech Solutions - Backup</a></div>
+                <div class="logo-text"><a href="https://www.aiwe.com.br/" style="text-decoration: none; color: inherit;">Aiwe Tech Solutions - Backup</a></div>
             </div>
             <nav id="mainNav">
                 <ul>
@@ -2126,7 +2128,7 @@
             });
         });
 		
-				// Controle do formulário de demonstração
+		// Controle do formulário de demonstração
         const openFormBtn = document.getElementById('openFormBtn');
         const closeFormBtn = document.getElementById('closeFormBtn');
         const contactForm = document.getElementById('contactForm');

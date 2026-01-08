@@ -1699,7 +1699,7 @@
                 ];
                 
                 const randomQuery = queries[Math.floor(Math.random() * queries.length)];
-                const functionUrl = '/.netlify/functions/gnews-proxy?q=' + encodeURIComponent(randomQuery) + '&max=5';
+                
                 
                 const response = await fetch(functionUrl);
                 

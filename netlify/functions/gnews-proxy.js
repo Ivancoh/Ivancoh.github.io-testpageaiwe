@@ -1,5 +1,3 @@
-// netlify/functions/gnews-proxy.js
-
 // Fallbacks específicos para cada serviço
 const SERVICE_FALLBACKS = {
   'firewall': [

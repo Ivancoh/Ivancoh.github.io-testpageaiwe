@@ -22,7 +22,7 @@ const SERVICE_FALLBACKS = {
     {
       title: "Backup AIWE: Proteção completa contra perda de dados",
       description: "Soluções em nuvem com criptografia avançada",
-      url: "https://www.aiwe.com.br/servicos-landing/backup.html",
+      url: "https://valor.globo.com/patrocinado/dino/noticia/2025/08/08/transportadora-reduz-custos-em-40-ao-migrar-para-nuvem-1.ghtml",
       publishedAt: new Date().toISOString(),
       source: { name: "AIWE Backup" }
     },

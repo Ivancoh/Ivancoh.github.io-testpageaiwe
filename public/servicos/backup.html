@@ -1699,7 +1699,7 @@
                 ];
                 
                 const randomQuery = queries[Math.floor(Math.random() * queries.length)];
-                
+                const functionUrl = '/.netlify/functions/gnews-proxy?q=' + encodeURIComponent(randomQuery) + '&max=5';
                 
                 const response = await fetch(functionUrl);
                 
@@ -1882,29 +1882,20 @@
             console.log('Usando notícias de fallback');
             const fallbackNews = [
                 {
-                    title: "Empresas perdem dados críticos por falta de backup adequado - Proteja-se!",
-                    description: "Estudo mostra que 60% das empresas que perdem dados encerram atividades em 6 meses",
-                    url: "https://www.cio.com/article/272062/disaster-recovery-business-continuity-statistics-you-should-know.html"
+                    title: "Transportadora reduz custos em 40% ao migrar para nuvem",
+                    url: "https://valor.globo.com/patrocinado/dino/noticia/2025/08/08/transportadora-reduz-custos-em-40-ao-migrar-para-nuvem-1.ghtml"
                 },
                 {
-                    title: "Ransomware ataca pequenas empresas - Backup é a melhor defesa",
-                    description: "Ataques de ransomware aumentam 150% contra pequenos negócios",
-                    url: "https://www.cybereason.com/blog/ransomware-attacks-against-small-businesses-are-on-the-rise"
+                    title: "Brasil: 73% das empresas sofrem com ransomware, mas custo de recuperação cai",
+                    url: "https://itforum.com.br/noticias/ransomware-atinge-73-empresas-br-2024/"
                 },
                 {
-                    title: "Conformidade com LGPD exige políticas de backup e recuperação",
-                    description: "Empresas precisam implementar soluções de backup para atender à legislação",
-                    url: "https://iapp.org/news/a/the-brazilian-general-data-protection-law-goes-into-effect/"
+                    title: "Empresas Brasileiras Perdem, em Média, R$ 6,75 Milhões por Violação de Dados",
+                    url: "https://forbes.com.br/forbes-tech/2024/09/empresas-brasileiras-perdem-em-media-r-675-milhoes-por-violacao-de-dados/"
                 },
                 {
-                    title: "Backup em nuvem ganha força como estratégia de continuidade de negócios",
-                    description: "Empresas migram backup local para soluções em nuvem por segurança e escalabilidade",
-                    url: "https://www.forbes.com/sites/forbestechcouncil/2021/03/26/why-cloud-backup-is-critical-for-business-continuity-and-disaster-recovery/"
-                },
-                {
-                    title: "Recuperação de desastres: por que seu plano precisa incluir backup em nuvem",
-                    description: "Especialistas recomendam abordagem 3-2-1 para backup de dados corporativos",
-                    url: "https://www.zdnet.com/article/what-is-the-3-2-1-backup-rule/"
+                    title: "Como se proteger contra a pandemia de ciberataques que assola o mundo?",
+                    url: "https://olhardigital.com.br/2022/05/11/vamos-criar/como-se-proteger-contra-a-pandemia-de-ciberataques-que-assola-o-mundo/"
                 }
             ];
 
